@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>AgentHub Admin</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-primary-fixed": "#0f0069", "on-tertiary-fixed": "#25005a", "surface-bright": "#2c3a4c", "secondary-fixed-dim": "#b4c5ff", "surface-tint": "#c3c0ff", "secondary-fixed": "#dbe1ff", "on-secondary-fixed-variant": "#003ea8", "error-container": "#93000a", "primary-container": "#4f46e5", "on-primary": "#1d00a5", "on-surface-variant": "#c7c4d8", "error": "#ffb4ab", "tertiary-container": "#7531e6", "surface": "#051424", "on-surface": "#d4e4fa", "on-primary-fixed-variant": "#3323cc", "surface-container-highest": "#273647", "background": "#051424", "on-error": "#690005", "tertiary-fixed": "#eaddff", "surface-variant": "#273647", "on-background": "#d4e4fa", "secondary": "#b4c5ff", "on-tertiary": "#3f008e", "inverse-on-surface": "#233143", "secondary-container": "#0053db", "on-tertiary-container": "#e4d4ff", "on-secondary": "#002a78", "on-secondary-container": "#cdd7ff", "primary-fixed": "#e2dfff", "primary": "#c3c0ff", "inverse-surface": "#d4e4fa", "on-tertiary-fixed-variant": "#5a00c6", "surface-container": "#122131", "outline-variant": "#464555", "surface-container-lowest": "#010f1f", "surface-container-low": "#0d1c2d", "tertiary": "#d2bbff", "surface-dim": "#051424", "on-secondary-fixed": "#00174b", "inverse-primary": "#4d44e3", "tertiary-fixed-dim": "#d2bbff", "surface-container-high": "#1c2b3c", "on-error-container": "#ffdad6", "on-primary-container": "#dad7ff", "outline": "#918fa1", "primary-fixed-dim": "#c3c0ff" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xl": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "gutter": "1rem", "margin": "1.5rem", "space-md": "0.75rem", "gutter-mobile": "0.75rem", "space-lg": "1rem", "space-xs": "0.25rem" }, fontFamily: { "headline-lg": ["Geist"], "headline-md": ["Geist"], "headline-xl-mobile": ["Geist"], "body-md": ["Geist"], "label-md": ["JetBrains Mono"], "label-lg": ["JetBrains Mono"], "headline-sm": ["Geist"], "body-xs": ["Geist"], "body-sm": ["Geist"], "headline-xl": ["Geist"], "label-sm": ["JetBrains Mono"], "body-lg": ["Geist"] }, fontSize: { "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }], "headline-md": ["18px", { lineHeight: "26px", letterSpacing: "-0.015em", fontWeight: "600" }], "headline-xl-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0em", fontWeight: "500" }], "label-lg": ["13px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "headline-sm": ["15px", { lineHeight: "22px", letterSpacing: "-0.01em", fontWeight: "600" }], "body-xs": ["11px", { lineHeight: "16px", fontWeight: "400" }], "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }], "headline-xl": ["36px", { lineHeight: "44px", letterSpacing: "-0.025em", fontWeight: "600" }], "label-sm": ["10px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background text-on-surface font-body-md text-body-md antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.2)]"><div class="h-16 px-gutter-mobile flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Abrir menú de navegación" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface hover:bg-surface-container-high transition-colors" onclick="document.getElementById('mobile-drawer').classList.toggle('-translate-x-full');document.getElementById('drawer-backdrop').classList.toggle('hidden');" type="button"><span class="material-symbols-outlined text-[22px]">menu</span></button><img alt="AgentHub Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrAeMHbM_uUSRh2DEM0ztz07PpviWqhXccuGmytduwHRm7CYZBwxLI9M772XfSkQWrnnJ7oyboNU-TUXCgwr6UZcnMHV1iZf9X58PI16ZchgK1GIafh-zKn1XGs9NADnbjvBQ-gQd1lnQqzYSpApiShMaFNffzYTsO1oQfHBniXiDXXOu-FgC98cgJ-EDpJcLrgchRXVjwdgor_8Vf8WFAULcnlwerbObqKMVCmPCnFE"/><div class="flex flex-col"><span class="font-label-sm text-label-sm uppercase tracking-wider text-primary">AgentHub</span><span class="font-headline-sm text-headline-sm leading-tight text-on-surface">Contrataciones</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Alternar modo oscuro" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="document.documentElement.classList.toggle('dark')" type="button"><span class="material-symbols-outlined text-[20px]">dark_mode</span></button><div class="relative flex items-center justify-center pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Sfn5_8iLUADfzMxymHKMUeDP2X90gI5iuSUW0hNsO2Q13Fd9-xZAxjGQJsiIR15pA2oYfdOwh-U4yICEu9yhVl2vKB43YCIRd97o762eXx0sBLD5VT_UB_DQ5Di2LXeFiRUB6kFABfKsCUE3sMXhtbb1s3A4Kx4tc69HXKEhKgb3fnfRxVTDIy3KVAL_XcV57rbNS3sjdzAVq8gMm8jIea-8eJS6bhIDj-jSI2I"/><span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-surface-container-lowest"></span></div></div></div></header><div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity" id="drawer-backdrop" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');this.classList.add('hidden');"></div><aside class="fixed top-0 bottom-0 left-0 z-50 w-72 max-w-[85vw] bg-surface-container-low shadow-[0_8px_24px_-4px_rgba(0,0,0,0.65)] -translate-x-full transition-transform duration-200 ease-in-out flex flex-col pt-safe pb-safe" id="mobile-drawer"><div class="h-16 px-margin-mobile flex items-center justify-between bg-surface-container-lowest/60"><div class="flex items-center gap-space-sm"><img alt="AgentHub Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrAeMHbM_uUSRh2DEM0ztz07PpviWqhXccuGmytduwHRm7CYZBwxLI9M772XfSkQWrnnJ7oyboNU-TUXCgwr6UZcnMHV1iZf9X58PI16ZchgK1GIafh-zKn1XGs9NADnbjvBQ-gQd1lnQqzYSpApiShMaFNffzYTsO1oQfHBniXiDXXOu-FgC98cgJ-EDpJcLrgchRXVjwdgor_8Vf8WFAULcnlwerbObqKMVCmPCnFE"/><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AgentHub Console</span></div><button aria-label="Cerrar menú" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');document.getElementById('drawer-backdrop').classList.add('hidden');" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button></div><div class="px-margin-mobile py-space-sm bg-surface-container-high/40 flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Red Operacional Activa</span></div><span class="font-label-sm text-label-sm text-primary font-mono">v2.8-prod</span></div><nav class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-1" data-active-classes="bg-primary-container text-on-primary-container font-semibold"><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="panel" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="flex-1">1. Panel</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="usuarios" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span class="flex-1">2. Usuarios</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="agentes" href="#"><span class="material-symbols-outlined text-[20px]">smart_toy</span><span class="flex-1">3. Agentes</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="habilidades" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span class="flex-1">4. Habilidades</span></a><a aria-current="page" class="flex items-center gap-space-md px-space-md h-11 rounded-lg transition-colors bg-primary-container text-on-primary-container font-semibold" data-path="contrataciones" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="flex-1">5. Contrataciones</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="registro-de-errores" href="#"><span class="material-symbols-outlined text-[20px]">report_problem</span><span class="flex-1">6. Registro de errores</span></a></nav><div class="p-space-md bg-surface-container-lowest flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-9 h-9 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Sfn5_8iLUADfzMxymHKMUeDP2X90gI5iuSUW0hNsO2Q13Fd9-xZAxjGQJsiIR15pA2oYfdOwh-U4yICEu9yhVl2vKB43YCIRd97o762eXx0sBLD5VT_UB_DQ5Di2LXeFiRUB6kFABfKsCUE3sMXhtbb1s3A4Kx4tc69HXKEhKgb3fnfRxVTDIy3KVAL_XcV57rbNS3sjdzAVq8gMm8jIea-8eJS6bhIDj-jSI2I"/><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface leading-snug">Admin Root</span><span class="font-label-sm text-label-sm text-on-surface-variant">admin@agenthub.io</span></div></div><button aria-label="Cerrar sesión" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></aside><main class="flex flex-col relative w-full pt-16 pb-20 bg-background min-h-screen px-gutter-mobile"><div class="flex flex-col w-full pb-6 space-y-4">
+<!-- Header Contextual -->
+<div class="flex flex-col space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary">Libro Mayor de Renta</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-mono">4 Contratos</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">
+      Registro comercial de contratos de alquiler de agentes y desglose de tarifas
+    </p>
+</div>
+<!-- Metric Strip -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Facturación Activa</span>
+<span class="material-symbols-outlined text-[16px] text-primary">payments</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-mono font-semibold">$1,350</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">USD</span>
+</div>
+<span class="font-body-xs text-body-xs text-secondary mt-1">3 vigentes · 1 finalizado</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total Histórico</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">account_balance_wallet</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-mono font-semibold">$1,800</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">USD</span>
+</div>
+<span class="font-body-xs text-body-xs text-on-surface-variant mt-1">100% cobro conciliado</span>
+</div>
+</div>
+<!-- Search & Filter Controls -->
+<div class="flex items-center gap-space-sm bg-surface-container-low p-1.5 rounded-xl">
+<div class="relative flex-1 flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-[18px] text-on-surface-variant">search</span>
+<input class="w-full h-9 pl-9 pr-3 rounded-lg bg-surface-container-highest text-on-surface text-body-sm placeholder:text-on-surface-variant outline-none focus:ring-1 focus:ring-primary" placeholder="Filtrar por ID, cliente o agente..." type="text"/>
+</div>
+<button class="h-9 px-3 rounded-lg bg-surface-container flex items-center gap-1.5 text-on-surface-variant text-label-md">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span class="hidden sm:inline">Filtros</span>
+</button>
+</div>
+<!-- Contenedor Tabla con Scroll Horizontal Delimitado -->
+<div class="w-full rounded-xl bg-surface-container-low overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[700px]">
+<thead>
+<tr class="bg-surface-container-high/60 h-[34px]">
+<th class="px-space-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono">ID / Cliente</th>
+<th class="px-space-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono">Agente</th>
+<th class="px-space-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono">Habilidades contratadas</th>
+<th class="px-space-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono">Vigencia (Inicio - Fin)</th>
+<th class="px-space-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono text-right">Importe</th>
+<th class="px-space-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono text-center">Estado</th>
+<th class="px-space-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono text-center">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40">
+<!-- Item 1 -->
+<tr class="hover:bg-surface-container/60 transition-colors h-14">
+<td class="px-space-md py-2">
+<div class="flex items-center gap-2.5">
+<img class="w-7 h-7 rounded-full object-cover shrink-0" data-alt="Corporate headshot of Lucía Moreno, a Hispanic tech operations lead with glasses, dark ambient office background, professional portrait in indigo lighting style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6a-SQsv7qcf5i1f5TBolRfCVsJWF44srpoYPaRgDXh6L5pFJaIi3rkJIS7Jl10pnbLiz1Lw7hsSHboNgxYXQLhxtyJhJAGG87GBEys9ETsjHidX2wnGUYaNXOARoDSkZNmwxlQdQ5Bi7mBpJ9dAY145fDvLWiuhQIlQJOQgiFbJR6h7Z9msbWIgju8Ga8FvsGd_uDF_SYPs2frBNA96e9hzyqcO4e5XyPjPztqws"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm font-mono text-primary font-semibold">C-1001</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">U-001</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium truncate max-w-[130px]">Northstar Labs</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">Lucía Moreno</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">smart_toy</span>
+<div>
+<div class="font-body-sm text-body-sm text-on-surface font-medium">Atlas Researcher</div>
+<span class="font-label-sm text-label-sm font-mono text-on-surface-variant">A-001</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex flex-wrap gap-1 max-w-[180px]">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Web Research ($320)</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Data Analysis ($180)</span>
+</div>
+</td>
+<td class="px-space-md py-2 font-label-sm text-label-sm font-mono text-on-surface-variant whitespace-nowrap">
+<div>2026-10-01</div>
+<div class="text-on-surface-variant/70">2026-11-01</div>
+</td>
+<td class="px-space-md py-2 text-right">
+<span class="font-label-md text-label-md font-mono text-on-surface font-semibold">$500</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono block">USD</span>
+</td>
+<td class="px-space-md py-2 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 font-label-sm text-label-sm font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo
+              </span>
+</td>
+<td class="px-space-md py-2 text-center">
+<button class="h-8 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center gap-1 transition-colors mx-auto" onclick="openModal('C-1001')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span class="font-body-xs text-body-xs font-medium">Ver detalle</span>
+</button>
+</td>
+</tr>
+<!-- Item 2 -->
+<tr class="hover:bg-surface-container/60 transition-colors h-14">
+<td class="px-space-md py-2">
+<div class="flex items-center gap-2.5">
+<img class="w-7 h-7 rounded-full object-cover shrink-0" data-alt="Headshot of Mateo Ruiz, enterprise customer support manager, short dark hair, sleek navy turtleneck against a high tech monitoring server room, soft cyan backlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVGBqsqtp8nG99ahoTgfEvghwPyeq905N8i308-_fDqEHUbIw7GT3ChUaLUFDwlIZI9TondxTYT0OOPN6qFFzv0IoVxUOOwgBYR3j_Z8TTgpJbEKMg85svLcVx39wkS3PSKyaQ6uRHyuOkLL_R8tjl6UL6IKD0VU1CwKf1KYIyQdAoxLML8an3pQlD0RGHb8tly7yl7PaKumt3zirfvXyGpSz4gfobJ3uYv8nB28g"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm font-mono text-primary font-semibold">C-1002</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">U-002</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium truncate max-w-[130px]">BrightPath</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">Mateo Ruiz</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">support_agent</span>
+<div>
+<div class="font-body-sm text-body-sm text-on-surface font-medium">Nova Support</div>
+<span class="font-label-sm text-label-sm font-mono text-on-surface-variant">A-002</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex flex-wrap gap-1 max-w-[180px]">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Customer Support ($240)</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Workflow Auto ($160)</span>
+</div>
+</td>
+<td class="px-space-md py-2 font-label-sm text-label-sm font-mono text-on-surface-variant whitespace-nowrap">
+<div>2026-10-10</div>
+<div class="text-on-surface-variant/70">2026-11-10</div>
+</td>
+<td class="px-space-md py-2 text-right">
+<span class="font-label-md text-label-md font-mono text-on-surface font-semibold">$400</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono block">USD</span>
+</td>
+<td class="px-space-md py-2 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 font-label-sm text-label-sm font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo
+              </span>
+</td>
+<td class="px-space-md py-2 text-center">
+<button class="h-8 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center gap-1 transition-colors mx-auto" onclick="openModal('C-1002')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span class="font-body-xs text-body-xs font-medium">Ver detalle</span>
+</button>
+</td>
+</tr>
+<!-- Item 3 -->
+<tr class="hover:bg-surface-container/60 transition-colors h-14">
+<td class="px-space-md py-2">
+<div class="flex items-center gap-2.5">
+<img class="w-7 h-7 rounded-full object-cover shrink-0" data-alt="Portrait of Sofia Chen, senior data architect, professional corporate aesthetic, minimal studio lighting with deep violet and blue shadows, sharp focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVAMgFt3Iu9kNZuAJDdGzPP4J-VDXqO7m0v4jtOMFg7SIQHFYhFDzCGhVl6k1S1ZAK68hwGvurDCzYrPFwlSuNhKD9qCehQujtKpRUQygkslvy-gVFghZdGVDUwYtLh53p22H_3iKK9sISK0aeU4hmxs6kCmwNEYSX-Wu_f5auUKSLVz_tYExRbmUTQOmfiIoRtqGkeCpwYXyGHz8-qopw3l9fb_UD8ZKl0SiR1Xo"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm font-mono text-primary font-semibold">C-1003</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">U-003</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium truncate max-w-[130px]">Orbit Data</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">Sofía Chen</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">analytics</span>
+<div>
+<div class="font-body-sm text-body-sm text-on-surface font-medium">Orbit Analyst</div>
+<span class="font-label-sm text-label-sm font-mono text-on-surface-variant">A-003</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex flex-wrap gap-1 max-w-[180px]">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Data Analysis ($300)</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Web Research ($150)</span>
+</div>
+</td>
+<td class="px-space-md py-2 font-label-sm text-label-sm font-mono text-on-surface-variant whitespace-nowrap">
+<div>2026-09-15</div>
+<div class="text-on-surface-variant/70">2026-10-15</div>
+</td>
+<td class="px-space-md py-2 text-right">
+<span class="font-label-md text-label-md font-mono text-on-surface font-semibold">$450</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono block">USD</span>
+</td>
+<td class="px-space-md py-2 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Finalizado
+              </span>
+</td>
+<td class="px-space-md py-2 text-center">
+<button class="h-8 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center gap-1 transition-colors mx-auto" onclick="openModal('C-1003')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span class="font-body-xs text-body-xs font-medium">Ver detalle</span>
+</button>
+</td>
+</tr>
+<!-- Item 4 -->
+<tr class="hover:bg-surface-container/60 transition-colors h-14">
+<td class="px-space-md py-2">
+<div class="flex items-center gap-2.5">
+<img class="w-7 h-7 rounded-full object-cover shrink-0" data-alt="Portrait of Valentina Cruz, product director in modern tech workstation, intelligent gaze, subtle neon teal and indigo accent lighting, confident executive mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2dVE-fMAJX0GeZ6ccSYtmJdB6tjPiBYSgUeMVkNoHIAWECPGv3p_n7nQVgv_0ZGG-nXuBXmYJr-bF98L3410EiPTg6TYeFLjixk1Vb6D80Qq32JUnQ02MMeHvNcQm9PdjzyD_7EmS7POVJEvoVynx9Rb6J5NlOp5-X62tDhGDMoQlrqnhunfcPPPNXYzZAou2DnqF5A5tK4Eh6Mv0ZpHxcVUCblmrtMR81jLYEdU"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm font-mono text-primary font-semibold">C-1004</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">U-005</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium truncate max-w-[130px]">Northstar Labs</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">Valentina Cruz</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">smart_toy</span>
+<div>
+<div class="font-body-sm text-body-sm text-on-surface font-medium">Atlas Researcher</div>
+<span class="font-label-sm text-label-sm font-mono text-on-surface-variant">A-001</span>
+</div>
+</div>
+</td>
+<td class="px-space-md py-2">
+<div class="flex flex-wrap gap-1 max-w-[180px]">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Web Research ($280)</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Data Analysis ($170)</span>
+</div>
+</td>
+<td class="px-space-md py-2 font-label-sm text-label-sm font-mono text-on-surface-variant whitespace-nowrap">
+<div>2026-11-01</div>
+<div class="text-on-surface-variant/70">2026-12-01</div>
+</td>
+<td class="px-space-md py-2 text-right">
+<span class="font-label-md text-label-md font-mono text-on-surface font-semibold">$450</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono block">USD</span>
+</td>
+<td class="px-space-md py-2 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 font-label-sm text-label-sm font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Activo
+              </span>
+</td>
+<td class="px-space-md py-2 text-center">
+<button class="h-8 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center gap-1 transition-colors mx-auto" onclick="openModal('C-1004')">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span class="font-body-xs text-body-xs font-medium">Ver detalle</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Summary -->
+<div class="px-space-md py-2.5 bg-surface-container-lowest flex items-center justify-between text-on-surface-variant font-body-xs text-body-xs">
+<span>Mostrando 4 de 4 registros comerciales</span>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span class="font-label-sm text-label-sm font-mono">Sincronizado vía Ledger-RPC</span>
+</div>
+</div>
+</div>
+<!-- Vista Adaptativa Mobile: Tarjetas Desglosadas Compactas -->
+<div class="sm:hidden flex flex-col space-y-3 mt-2">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-mono">Vista Resumen Móvil</span>
+<span class="font-label-sm text-label-sm text-primary">Detalles completos arriba</span>
+</div>
+<!-- Card Resumen Rápida 1 -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col space-y-3">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="Avatar of Lucia Moreno in low light high technology room, confident smile, clean corporate styling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJgbMik4Ir0Z_Rtnwx9JiuXQQDTD7zHOOGEETLnKYkecB6FJ2lRjLN806aoxrOP8p-z8X84MCCZLaGDV1iBJv-z-EBYiTG0QgbrSO8jbD1Toj753pybt2H7wHdTnOZ_2DULGHOt7Yb-eGTiAcT5avgcApMJt94-PiJzVSuv7d41dQ8vzUqR8RsXVngNp0Nl6Uuxp1DMm9CNgp3UENnTd4RqjeOhTOHx5fNnCGd4bc"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">C-1001 · Northstar Labs</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant">Lucía Moreno (U-001)</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 font-label-sm text-label-sm font-mono">
+          Activo
+        </span>
+</div>
+<div class="flex items-center justify-between bg-surface-container p-2 rounded-lg text-body-xs font-mono">
+<span class="text-on-surface-variant">Atlas Researcher</span>
+<span class="text-on-surface font-semibold">$500 USD</span>
+</div>
+<button class="w-full h-8 rounded-lg bg-primary-container text-on-primary-container font-body-sm text-body-sm font-medium flex items-center justify-center gap-1" onclick="openModal('C-1001')">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span> Inspeccionar Liquidación C-1001
+      </button>
+</div>
+</div>
+<!-- MODAL INTERACTIVO: Detalle de Contrato C-1001 -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-space-md bg-black/75 backdrop-blur-sm transition-opacity duration-200" id="contract-modal">
+<div class="relative w-full max-w-lg rounded-xl bg-surface-container-low shadow-2xl overflow-hidden flex flex-col max-h-[795px]">
+<!-- Header del Modal -->
+<div class="px-space-md py- space-y-1 bg-surface-container flex items-center justify-between p-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">contract</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Detalle de Contrato</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-primary-container text-on-primary-container font-mono font-semibold">C-1001</span>
+</div>
+<span class="font-body-xs text-body-xs text-on-surface-variant font-mono">ID Único: CTR-2026-NL-09881A</span>
+</div>
+</div>
+<button aria-label="Cerrar modal" class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" onclick="closeModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Contenido Scrolleable -->
+<div class="p-space-md overflow-y-auto space-y-4">
+<!-- Banner Entidades Contratantes -->
+<div class="grid grid-cols-2 gap-2 bg-surface-container-lowest p-3 rounded-lg">
+<!-- Cliente -->
+<div class="flex flex-col space-y-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Cliente</span>
+<div class="flex items-center gap-2">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Portrait closeup of Lucía Moreno, tech client representative with warm rim light and analytical dark office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVaW1zczCR8obzUIzPAZoXdgXhRbBytpCk7RpzbRd3ExlMifT3qVGnFuJsYm5OU_ymc5JPGKs2wiL6TL8fcrNl4dnkbyl_fJkUMChqc4brhNHfx0zKBHs7JvAtmut3XSNxCc3_w4PTKjZYNYV88QeKHNxuJfWxwTW3XtCsvS5Vs6gGpjo9VPur5ObhhgaZkhdEwYOIlikndgwoEZFTf5MIITTRW4wndGR6vKTHfY4"/>
+<div class="flex flex-col min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface font-semibold truncate">Northstar Labs</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant truncate">Lucía Moreno (U-001)</span>
+</div>
+</div>
+</div>
+<!-- Agente -->
+<div class="flex flex-col space-y-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Agente Contratado</span>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface font-semibold truncate">Atlas Researcher</span>
+<span class="font-label-sm text-label-sm font-mono text-on-surface-variant">A-001</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Metadatos de Vigencia y Estado -->
+<div class="grid grid-cols-2 gap-2">
+<div class="p-2.5 rounded-lg bg-surface-container">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Periodo de Vigencia</span>
+<div class="font-label-sm text-label-sm font-mono text-on-surface mt-1">
+<div>Desde: 2026-10-01</div>
+<div>Hasta: 2026-11-01</div>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Estado Operativo</span>
+<div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 font-label-sm text-label-sm font-mono font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Activo / En Producción
+              </span>
+</div>
+</div>
+</div>
+<!-- Tabla Desglose Comercial Exacto -->
+<div class="space-y-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Desglose de Tarifas de Habilidades</span>
+<div class="rounded-lg bg-surface-container overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/70 text-on-surface-variant font-label-sm text-label-sm font-mono h-8">
+<th class="px-3">Concepto / Habilidad</th>
+<th class="px-3 text-right">Tarifa</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high font-body-sm text-body-sm">
+<tr>
+<td class="px-3 py-2 text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">public</span>
+                    Web Research
+                  </td>
+<td class="px-3 py-2 text-right font-mono font-medium text-on-surface">$320.00 USD</td>
+</tr>
+<tr>
+<td class="px-3 py-2 text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">query_stats</span>
+                    Data Analysis
+                  </td>
+<td class="px-3 py-2 text-right font-mono font-medium text-on-surface">$180.00 USD</td>
+</tr>
+<tr class="bg-surface-container-low font-mono text-on-surface">
+<td class="px-3 py-2 text-right text-on-surface-variant font-label-sm text-label-sm uppercase">Subtotal</td>
+<td class="px-3 py-2 text-right font-semibold">$500.00 USD</td>
+</tr>
+<tr class="bg-surface-container-lowest font-mono">
+<td class="px-3 py-2.5 text-right font-semibold text-primary">Total Pagado</td>
+<td class="px-3 py-2.5 text-right font-bold text-on-surface text-base">$500.00 USD</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Nota de Auditoría Inmutable -->
+<div class="p-2.5 rounded-lg bg-surface-container-lowest flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary mt-0.5">verified_user</span>
+<p class="font-body-xs text-body-xs text-on-surface-variant leading-relaxed">
+            Contrato verificado criptográficamente. Este registro no admite mutaciones manuales de edición ni cancelación forzada fuera de los protocolos acordados en SLA.
+          </p>
+</div>
+</div>
+<!-- Footer Modal con solo Acción de Cierre Permitida -->
+<div class="px-space-md py-3 bg-surface-container flex items-center justify-end gap-2 p-4">
+<button class="h-9 px-4 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-body-sm text-body-sm font-medium transition-colors" onclick="closeModal()" type="button">
+          Cerrar
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function openModal(contractId) {
+    const modal = document.getElementById('contract-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('contract-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+
+  // Cerrar al hacer clic fuera del card modal
+  document.getElementById('contract-modal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeModal();
+    }
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.3)]" data-active-classes="text-primary font-semibold"><div class="flex items-center justify-between h-16 px-space-xs"><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="panel" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-sm text-label-sm tracking-tight">Panel</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="usuarios" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span class="font-label-sm text-label-sm tracking-tight">Usuarios</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="agentes" href="#"><span class="material-symbols-outlined text-[20px]">smart_toy</span><span class="font-label-sm text-label-sm tracking-tight">Agentes</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="habilidades" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span class="font-label-sm text-label-sm tracking-tight">Habilidades</span></a><a aria-current="page" class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] transition-colors text-primary font-semibold" data-path="contrataciones" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-sm text-label-sm tracking-tight">Contratos</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="registro-de-errores" href="#"><span class="material-symbols-outlined text-[20px]">warning</span><span class="font-label-sm text-label-sm tracking-tight">Errores</span></a></div></nav></body></html>
