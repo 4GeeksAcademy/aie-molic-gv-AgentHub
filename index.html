@@ -136,9 +136,21 @@
               <p id="contracts-empty-state" class="hidden px-5 py-12 text-center text-sm text-slate-600 dark:text-slate-400" role="status">No hay contratos para mostrar.</p>
             </div>
           </section>
-          <section id="registro-de-errores" data-page="registro-de-errores" aria-labelledby="errores-title" class="space-y-3 text-slate-900 dark:text-slate-100" hidden>
-            <h1 id="errores-title" class="text-2xl font-semibold text-slate-950 dark:text-white">Registro de errores</h1>
-            <p class="text-sm text-slate-600 dark:text-slate-400">Esta sección se incorporará en una fase posterior.</p>
+          <section id="registro-de-errores" data-page="registro-de-errores" aria-labelledby="errores-title" class="space-y-6 text-slate-900 dark:text-slate-100" hidden>
+            <header class="space-y-1">
+              <h1 id="errores-title" tabindex="-1" class="text-2xl font-semibold tracking-tight text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-white">Registro de errores</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Consulta los registros de error de demostración y revisa su estado e información asociada.</p>
+            </header>
+            <div id="errors-table-region" class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" role="region" aria-label="Listado de errores" tabindex="0">
+              <table class="w-full min-w-[960px] text-left text-sm">
+                <caption class="sr-only">Registros de errores de AgentHub</caption>
+                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-800 dark:text-slate-300"><tr>
+                  <th scope="col" class="px-4 py-3 font-medium">Timestamp (UTC)</th><th scope="col" class="px-4 py-3 font-medium">Agente</th><th scope="col" class="px-4 py-3 font-medium">Tipo / Severidad</th><th scope="col" class="px-4 py-3 font-medium">Descripción</th><th scope="col" class="px-4 py-3 font-medium">Estado</th><th scope="col" class="px-4 py-3 text-right font-medium">Acciones</th>
+                </tr></thead>
+                <tbody id="errors-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+              </table>
+              <p id="errors-empty-state" class="hidden px-5 py-12 text-center text-sm text-slate-600 dark:text-slate-400" role="status">No hay errores para mostrar en esta sesión.</p>
+            </div>
           </section>
         </main>
       </div>
@@ -162,6 +174,14 @@
       </section>
     </div>
     <p id="contracts-announcement" class="sr-only" aria-live="polite"></p>
+    <div id="error-detail-backdrop" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true">
+      <section id="error-detail-dialog" class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="error-detail-title" tabindex="-1">
+        <header class="flex items-start justify-between gap-4"><div><h2 id="error-detail-title" class="text-lg font-semibold text-slate-950 dark:text-white"></h2><p id="error-detail-id" class="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400"></p></div><button id="error-detail-close" type="button" aria-label="Cerrar detalle del error" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400">Cerrar</button></header>
+        <dl id="error-detail-fields" class="mt-5 grid gap-4 sm:grid-cols-2"></dl>
+        <section class="mt-5"><h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Mensaje</h3><p id="error-detail-message" class="mt-2 break-words text-sm leading-6 text-slate-700 dark:text-slate-300"></p></section>
+        <section class="mt-5"><h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Traza de demostración</h3><pre id="error-detail-stack" tabindex="0" class="mt-2 max-h-64 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-4 font-mono text-xs leading-6 text-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"><code></code></pre></section>
+      </section>
+    </div>
     <div id="skill-detail-backdrop" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true"><section id="skill-detail-dialog" class="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="skill-detail-title" tabindex="-1"><header class="flex items-start justify-between gap-4"><div><h2 id="skill-detail-title" class="text-lg font-semibold text-slate-950 dark:text-white"></h2><p id="skill-detail-id" class="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400"></p></div><button id="skill-detail-close" type="button" aria-label="Cerrar detalle de habilidad" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800">Cerrar</button></header><dl id="skill-detail-fields" class="mt-5 grid gap-4 sm:grid-cols-2"></dl><div class="mt-5"><h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Agentes asociados</h3><ul id="skill-detail-agents" class="mt-2 space-y-2 text-sm text-slate-600 dark:text-slate-300"></ul></div></section></div>
     <div id="skill-delete-backdrop" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true"><section id="skill-delete-dialog" class="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900" role="alertdialog" aria-modal="true" aria-labelledby="skill-delete-title" aria-describedby="skill-delete-description" tabindex="-1"><h2 id="skill-delete-title" class="text-lg font-semibold text-slate-950 dark:text-white">¿Eliminar habilidad?</h2><p id="skill-delete-description" class="mt-2 text-sm text-slate-600 dark:text-slate-300"></p><p class="mt-3 text-xs text-slate-500 dark:text-slate-400">Solo se retirará de esta sesión y de las relaciones actuales de agentes. Los snapshots comerciales no se modificarán.</p><footer class="mt-6 flex justify-end gap-3"><button id="skill-delete-cancel" type="button" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:border-slate-700 dark:hover:bg-slate-800">Cancelar</button><button id="skill-delete-confirm" type="button" class="rounded-lg bg-rose-700 px-4 py-2 text-sm font-medium text-white hover:bg-rose-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">Eliminar</button></footer></section></div>
     <div id="agent-config-backdrop" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true">

@@ -31,6 +31,14 @@
       { id: "C-1002", clientUserId: "U-002", clientCompanySnapshot: "BrightPath", clientContactSnapshot: "Mateo Ruiz", agentId: "A-002", agentNameSnapshot: "Nova Support", startDate: "2026-10-10", endDate: "2026-11-10", status: "Activo", lines: [{ skillId: "S-003", skillNameSnapshot: "Customer Support", unitPriceUsd: 240, subtotalUsd: 240 }, { skillId: "S-004", skillNameSnapshot: "Workflow Automation", unitPriceUsd: 160, subtotalUsd: 160 }] },
       { id: "C-1003", clientUserId: "U-003", clientCompanySnapshot: "Orbit Data", clientContactSnapshot: "Sofía Chen", agentId: "A-003", agentNameSnapshot: "Orbit Analyst", startDate: "2026-09-15", endDate: "2026-10-15", status: "Finalizado", lines: [{ skillId: "S-002", skillNameSnapshot: "Data Analysis", unitPriceUsd: 300, subtotalUsd: 300 }, { skillId: "S-001", skillNameSnapshot: "Web Research", unitPriceUsd: 150, subtotalUsd: 150 }] },
       { id: "C-1004", clientUserId: "U-005", clientCompanySnapshot: "Northstar Labs", clientContactSnapshot: "Valentina Cruz", agentId: "A-001", agentNameSnapshot: "Atlas Researcher", startDate: "2026-11-01", endDate: "2026-12-01", status: "Activo", lines: [{ skillId: "S-001", skillNameSnapshot: "Web Research", unitPriceUsd: 280, subtotalUsd: 280 }, { skillId: "S-002", skillNameSnapshot: "Data Analysis", unitPriceUsd: 170, subtotalUsd: 170 }] }
+    ],
+    errorsCollection: [
+      { id: "E-001", timestamp: "2026-11-20 09:42 UTC", agentId: "A-003", agentNameSnapshot: "Orbit Analyst", severity: "Crítico", description: "Tiempo de espera agotado al consultar fuente de datos.", status: "Abierto", message: "La consulta de demostración superó el tiempo de espera configurado mientras solicitaba una fuente de datos.", stackTrace: "Error: tiempo de espera agotado\n  en consultarFuente (demo/sources.js:42:11)\n  en ejecutarTarea (demo/runner.js:18:7)" },
+      { id: "E-002", timestamp: "2026-11-20 09:18 UTC", agentId: "A-002", agentNameSnapshot: "Nova Support", severity: "Advertencia", description: "Límite de reintentos alcanzado para una tarea.", status: "Abierto", message: "La tarea de demostración alcanzó el límite local de intentos y quedó pendiente de revisión.", stackTrace: "Warning: límite de intentos alcanzado\n  en procesarSolicitud (demo/tasks.js:61:9)\n  en ejecutarCola (demo/queue.js:24:5)" },
+      { id: "E-003", timestamp: "2026-11-20 08:56 UTC", agentId: "A-001", agentNameSnapshot: "Atlas Researcher", severity: "Información", description: "Una fuente devolvió contenido vacío.", status: "Abierto", message: "Una fuente de ejemplo respondió sin contenido utilizable; no se generó un resumen a partir de ella.", stackTrace: "Info: contenido vacío en fuente de ejemplo\n  en validarContenido (demo/research.js:33:8)\n  en recopilarFuentes (demo/research.js:12:3)" },
+      { id: "E-004", timestamp: "2026-11-19 17:31 UTC", agentId: "A-003", agentNameSnapshot: "Orbit Analyst", severity: "Crítico", description: "Fallo al validar el esquema de respuesta.", status: "Abierto", message: "La respuesta ficticia no coincidió con el esquema esperado durante la validación local.", stackTrace: "Error: esquema de respuesta no válido\n  en validarEsquema (demo/validation.js:27:10)\n  en analizarResultado (demo/analysis.js:44:6)" },
+      { id: "E-005", timestamp: "2026-11-19 16:04 UTC", agentNameSnapshot: "Verde Workflow", severity: "Advertencia", description: "La tarea se pausó por falta de entrada.", status: "Resuelto", message: "La tarea de demostración se pausó al no recibir la entrada requerida. Este registro permanece como referencia histórica.", stackTrace: "Warning: falta entrada requerida\n  en comprobarEntrada (demo/workflow.js:19:4)\n  en iniciarPaso (demo/workflow.js:8:2)" },
+      { id: "E-006", timestamp: "2026-11-19 14:27 UTC", agentId: "A-002", agentNameSnapshot: "Nova Support", severity: "Información", description: "Tarea completada tras un reintento.", status: "Abierto", message: "La tarea de demostración terminó correctamente después de un reintento local.", stackTrace: "Info: tarea completada tras reintento\n  en finalizarTarea (demo/tasks.js:88:5)\n  en reintentarOperacion (demo/retry.js:31:7)" }
     ]
   };
 
@@ -65,6 +73,10 @@
   const agentDeleteDialog = document.getElementById("agent-delete-dialog");
   const contractsBody = document.getElementById("contracts-table-body");
   const contractsEmpty = document.getElementById("contracts-empty-state");
+  const errorsBody = document.getElementById("errors-table-body");
+  const errorsEmpty = document.getElementById("errors-empty-state");
+  const errorBackdrop = document.getElementById("error-detail-backdrop");
+  const errorDialog = document.getElementById("error-detail-dialog");
   const contractBackdrop = document.getElementById("contract-detail-backdrop");
   const contractDialog = document.getElementById("contract-detail-dialog");
   let openUserMenuId = null;
@@ -82,6 +94,10 @@
   let openContractMenuId = null;
   let contractDialogReturnFocus = null;
   let contractBackdropPointerStarted = false;
+  let openErrorMenuId = null;
+  let errorMenuReturnFocus = null;
+  let errorDialogReturnFocus = null;
+  let activeErrorId = null;
 
   function formatContractDate(isoDate) {
     const parts = isoDate.split("-");
@@ -95,6 +111,145 @@
   function contractUsd(amount) {
     return "$" + amount.toLocaleString("en-US") + " USD";
   }
+
+  function errorAgentName(error) {
+    const agent = error.agentId && mockData.agentsCollection.find(function (item) { return item.id === error.agentId; });
+    return agent ? agent.name : error.agentNameSnapshot;
+  }
+
+  function errorField(label, value) {
+    const wrapper = document.createElement("div");
+    const term = document.createElement("dt"); term.className = "text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400"; term.textContent = label;
+    const description = document.createElement("dd"); description.className = "mt-1 break-words text-sm text-slate-900 dark:text-slate-100"; description.textContent = value;
+    wrapper.append(term, description); return wrapper;
+  }
+
+  function renderErrors() {
+    if (!errorsBody) return;
+    document.querySelectorAll("[id^='error-menu-']").forEach(function (menu) { menu.remove(); });
+    errorsBody.replaceChildren();
+    errorsEmpty.classList.toggle("hidden", mockData.errorsCollection.length !== 0);
+    mockData.errorsCollection.forEach(function (error) {
+      const row = document.createElement("tr"); row.className = "hover:bg-slate-50 dark:hover:bg-slate-800/60";
+      const timestamp = document.createElement("td"); timestamp.className = "whitespace-nowrap px-4 py-4 font-mono text-xs tabular-nums text-slate-600 dark:text-slate-300";
+      const id = document.createElement("span"); id.className = "mr-2 font-semibold text-indigo-700 dark:text-indigo-300"; id.textContent = error.id;
+      const time = document.createElement("time"); time.textContent = error.timestamp; time.setAttribute("datetime", error.timestamp.replace(" UTC", "").replace(" ", "T") + ":00Z"); timestamp.append(id, time);
+      const agentCell = document.createElement("td"); agentCell.className = "px-4 py-4 font-medium text-slate-900 dark:text-slate-100"; agentCell.textContent = errorAgentName(error);
+      const severityCell = document.createElement("td"); severityCell.className = "px-4 py-4";
+      const severity = document.createElement("span"); severity.className = "inline-flex rounded-full border px-2.5 py-1 text-xs font-medium " + (error.severity === "Crítico" ? "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950/50 dark:text-rose-200" : error.severity === "Advertencia" ? "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950/50 dark:text-amber-200" : "border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900 dark:bg-blue-950/50 dark:text-blue-200"); severity.textContent = error.severity; severityCell.appendChild(severity);
+      const description = document.createElement("td"); description.className = "max-w-xs px-4 py-4 text-slate-700 dark:text-slate-300"; description.textContent = error.description;
+      const statusCell = document.createElement("td"); statusCell.className = "px-4 py-4";
+      const status = document.createElement("span"); status.className = "inline-flex rounded-full border px-2.5 py-1 text-xs font-medium " + (error.status === "Resuelto" ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-200" : "border-slate-300 bg-slate-100 text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"); status.textContent = error.status; statusCell.appendChild(status);
+      const actions = document.createElement("td"); actions.className = "px-4 py-3 text-right";
+      const button = document.createElement("button"); button.type = "button"; button.id = "error-actions-" + error.id; button.className = "inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400"; button.textContent = "⋮"; button.setAttribute("aria-label", "Acciones para error " + error.id); button.setAttribute("aria-haspopup", "true"); button.setAttribute("aria-expanded", String(openErrorMenuId === error.id)); button.setAttribute("aria-controls", "error-menu-" + error.id); button.addEventListener("click", function () {
+        if (openErrorMenuId === error.id) { openErrorMenuId = null; errorMenuReturnFocus = null; renderErrors(); return; }
+        openErrorMenuId = error.id; renderErrors();
+        const active = document.getElementById("error-actions-" + error.id); errorMenuReturnFocus = active;
+        if (active) active.focus();
+        positionErrorMenu();
+      }); actions.appendChild(button);
+      if (openErrorMenuId === error.id) {
+        const menu = document.createElement("div"); menu.id = "error-menu-" + error.id; menu.className = "fixed z-[110] w-48 rounded-lg border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-700 dark:bg-slate-800"; menu.setAttribute("role", "group"); menu.setAttribute("aria-label", "Acciones para error " + error.id);
+        [["Ver detalle", "detail"], ...(error.status === "Abierto" ? [["Marcar como resuelto", "resolve"]] : [])].forEach(function (item) {
+          const option = document.createElement("button"); option.type = "button"; option.className = "block w-full rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:focus-visible:ring-indigo-400"; option.textContent = item[0];
+          option.addEventListener("click", function () { errorDialogReturnFocus = document.getElementById("error-actions-" + error.id); openErrorMenuId = null; errorMenuReturnFocus = null; renderErrors(); if (item[1] === "detail") openErrorDetail(error.id); else resolveError(error.id); }); menu.appendChild(option);
+        }); document.body.appendChild(menu);
+      }
+      row.append(timestamp, agentCell, severityCell, description, statusCell, actions); errorsBody.appendChild(row);
+    });
+  }
+
+  function positionErrorMenu() {
+    if (!openErrorMenuId) return;
+    const button = document.getElementById("error-actions-" + openErrorMenuId);
+    const menu = document.getElementById("error-menu-" + openErrorMenuId);
+    if (!button || !menu) return;
+    const rect = button.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const gap = 4;
+    const margin = 8;
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
+    const left = Math.max(margin, Math.min(rect.right - menuRect.width, viewportWidth - menuRect.width - margin));
+    const below = viewportHeight - rect.bottom;
+    const above = rect.top;
+    const placeBelow = below >= menuRect.height + gap || below >= above;
+    const top = placeBelow
+      ? Math.min(rect.bottom + gap, viewportHeight - menuRect.height - margin)
+      : Math.max(margin, rect.top - menuRect.height - gap);
+    Array.from(menu.classList).forEach(function (className) {
+      if (/^(left|top)-\[\d+px\]$/.test(className)) menu.classList.remove(className);
+    });
+    menu.classList.add("left-[" + Math.round(left) + "px]", "top-[" + Math.round(top) + "px]");
+  }
+
+  function closeErrorMenu(restoreFocus) {
+    if (!openErrorMenuId) return;
+    openErrorMenuId = null;
+    const returnFocus = errorMenuReturnFocus;
+    errorMenuReturnFocus = null;
+    renderErrors();
+    if (restoreFocus && returnFocus && returnFocus.isConnected) returnFocus.focus();
+  }
+
+  function updateErrorDetail() {
+    const error = mockData.errorsCollection.find(function (item) { return item.id === activeErrorId; });
+    if (!error) return;
+    const agent = errorAgentName(error);
+    document.getElementById("error-detail-title").textContent = error.id + " · " + agent;
+    document.getElementById("error-detail-id").textContent = error.timestamp;
+    const fields = document.getElementById("error-detail-fields"); fields.replaceChildren();
+    [["Agente", agent], ["Tipo / Severidad", error.severity], ["Estado", error.status], ["Descripción", error.description]].forEach(function (field) { fields.appendChild(errorField(field[0], field[1])); });
+    document.getElementById("error-detail-message").textContent = error.message;
+    document.querySelector("#error-detail-stack code").textContent = error.stackTrace;
+  }
+
+  function openErrorDetail(errorId) {
+    activeErrorId = errorId; updateErrorDetail(); errorBackdrop.classList.remove("hidden"); errorBackdrop.classList.add("flex"); document.getElementById("error-detail-close").focus();
+  }
+
+  function closeErrorDetail(restoreFocus) {
+    errorBackdrop.classList.add("hidden"); errorBackdrop.classList.remove("flex"); activeErrorId = null;
+    if (restoreFocus !== false && errorDialogReturnFocus && errorDialogReturnFocus.isConnected) errorDialogReturnFocus.focus();
+    else if (restoreFocus !== false) document.getElementById("errores-title").focus();
+  }
+
+  function resolveError(errorId) {
+    const error = mockData.errorsCollection.find(function (item) { return item.id === errorId; });
+    if (!error || error.status !== "Abierto") return;
+    error.status = "Resuelto"; renderErrors();
+    const actionButton = document.getElementById("error-actions-" + errorId);
+    if (actionButton) actionButton.focus();
+    if (activeErrorId === errorId) updateErrorDetail();
+  }
+
+  renderErrors();
+  window.addEventListener("resize", positionErrorMenu);
+  window.addEventListener("scroll", positionErrorMenu, true);
+  window.addEventListener("orientationchange", positionErrorMenu);
+  document.getElementById("error-detail-close").addEventListener("click", function () { closeErrorDetail(true); });
+  let errorBackdropPointerStarted = false;
+  errorBackdrop.addEventListener("pointerdown", function (event) { errorBackdropPointerStarted = event.target === errorBackdrop; });
+  errorBackdrop.addEventListener("click", function (event) { const shouldClose = errorBackdropPointerStarted && event.target === errorBackdrop; errorBackdropPointerStarted = false; if (shouldClose) closeErrorDetail(true); });
+  document.addEventListener("click", function (event) {
+    if (!openErrorMenuId) return;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    const menu = document.getElementById("error-menu-" + openErrorMenuId);
+    if ((menu && (path.includes(menu) || menu.contains(event.target))) || path.includes(errorsBody) || errorsBody.contains(event.target)) return;
+    closeErrorMenu(false);
+  });
+  errorDialog.addEventListener("keydown", function (event) {
+    if (event.key !== "Tab") return;
+    const controls = Array.from(errorDialog.querySelectorAll("button:not([disabled]), pre[tabindex]"));
+    if (!errorDialog.contains(document.activeElement)) { event.preventDefault(); controls[0].focus(); return; }
+    if (event.shiftKey && document.activeElement === controls[0]) { event.preventDefault(); controls[controls.length - 1].focus(); }
+    else if (!event.shiftKey && document.activeElement === controls[controls.length - 1]) { event.preventDefault(); controls[0].focus(); }
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+    if (!errorBackdrop.classList.contains("hidden")) { event.stopImmediatePropagation(); closeErrorDetail(true); return; }
+    if (openErrorMenuId) closeErrorMenu(true);
+  });
 
   function renderContracts() {
     contractsBody.replaceChildren();
@@ -949,6 +1104,11 @@
   function showPage(viewId) {
     if (!Object.prototype.hasOwnProperty.call(pageLabels, viewId)) return;
 
+    if (viewId !== "registro-de-errores") {
+      if (openErrorMenuId) closeErrorMenu(false);
+      if (!errorBackdrop.classList.contains("hidden")) closeErrorDetail(false);
+    }
+
     if (openUserMenuId) {
       openUserMenuId = null;
       renderUsers();
@@ -962,6 +1122,7 @@
     if (!contractBackdrop.classList.contains("hidden")) closeContractDetail(false);
     if (viewId === "habilidades") renderSkills();
     if (viewId === "contrataciones") renderContracts();
+    if (viewId === "registro-de-errores") renderErrors();
 
     pages.forEach(function (page) {
       page.hidden = page.dataset.page !== viewId;
