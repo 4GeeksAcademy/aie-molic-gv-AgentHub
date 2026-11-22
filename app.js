@@ -1,17 +1,23 @@
 (function () {
   "use strict";
 
-  // Fuente mock compartida para el Dashboard y la futura vista de agentes.
+  // Fuentes mock compartidas entre las vistas y sus relaciones por ID.
   const mockData = {
     monthlyMetrics: {
       revenueUsd: 24860,
       discountLossUsd: 1240
     },
     agentsCollection: [
-      { id: "A-001", name: "Atlas Researcher", ownerId: "U-001", ownerCompany: "Northstar Labs", status: "active", skillIds: ["S-001", "S-002"] },
-      { id: "A-002", name: "Nova Support", ownerId: "U-002", ownerCompany: "BrightPath", status: "active", skillIds: ["S-003", "S-004"] },
-      { id: "A-003", name: "Orbit Analyst", ownerId: "U-003", ownerCompany: "Orbit Data", status: "failing", skillIds: ["S-002", "S-001"] },
-      { id: "A-004", name: "Verde Workflow", ownerId: "U-004", ownerCompany: "Verde & Co.", status: "inactive", skillIds: ["S-004", "S-003"] }
+      { id: "A-001", name: "Atlas Researcher", ownerId: "U-001", ownerCompany: "Northstar Labs", status: "active", skillIds: ["S-001", "S-002"], systemPrompt: "Eres Atlas Researcher, especialista en investigación web para Northstar Labs. Contrasta fuentes primarias y registra referencias verificables. Resume los hallazgos con claridad y señala cualquier incertidumbre." },
+      { id: "A-002", name: "Nova Support", ownerId: "U-002", ownerCompany: "BrightPath", status: "active", skillIds: ["S-003", "S-004"], systemPrompt: "Eres Nova Support, asistente de atención para BrightPath. Clasifica cada consulta y redacta respuestas claras basadas en la información disponible. Si falta contexto, indícalo sin inventar datos." },
+      { id: "A-003", name: "Orbit Analyst", ownerId: "U-003", ownerCompany: "Orbit Data", status: "failing", skillIds: ["S-002", "S-001"], systemPrompt: "Eres Orbit Analyst, especialista en análisis de datos para Orbit Data. Comprueba la estructura de los datos antes de resumir tendencias y resultados. Explica supuestos y limita las conclusiones a la evidencia proporcionada." },
+      { id: "A-004", name: "Verde Workflow", ownerId: "U-004", ownerCompany: "Verde & Co.", status: "inactive", skillIds: ["S-004", "S-003"], systemPrompt: "Eres Verde Workflow, asistente para organizar procesos repetibles de Verde & Co. Describe los pasos necesarios de forma ordenada y confirma las dependencias conocidas. No afirmes haber ejecutado acciones externas." }
+    ],
+    skillsCollection: [
+      { id: "S-001", name: "Web Research" },
+      { id: "S-002", name: "Data Analysis" },
+      { id: "S-003", name: "Customer Support" },
+      { id: "S-004", name: "Workflow Automation" }
     ],
     usersCollection: [
       { id: "U-001", name: "Lucía Moreno", email: "lucia.moreno@northstar.example", company: "Northstar Labs", plan: "Enterprise", status: "Activo", signupDate: "2025-03-12" },
@@ -39,10 +45,20 @@
   const usersEmpty = document.getElementById("users-empty-state");
   const userBackdrop = document.getElementById("user-dialog-backdrop");
   const userDialog = document.getElementById("user-dialog");
+  const agentsList = document.getElementById("agents-list");
+  const agentsEmpty = document.getElementById("agents-empty-state");
+  const agentConfigBackdrop = document.getElementById("agent-config-backdrop");
+  const agentConfigDialog = document.getElementById("agent-config-dialog");
+  const agentDeleteBackdrop = document.getElementById("agent-delete-backdrop");
+  const agentDeleteDialog = document.getElementById("agent-delete-dialog");
   let openUserMenuId = null;
   let pendingUserId = null;
   let dialogMode = "detail";
   let dialogReturnFocus = null;
+  let openAgentMenuId = null;
+  let pendingAgentId = null;
+  let activeAgentDialog = null;
+  let agentDialogReturnFocus = null;
 
   function getUserAgents(user) {
     return mockData.agentsCollection.filter(function (agent) { return agent.ownerId === user.id; });
@@ -175,6 +191,273 @@
     (nextAction || document.getElementById("usuarios-title")).focus();
   }
 
+  function getAgentOwner(agent) {
+    return mockData.usersCollection.find(function (user) { return user.id === agent.ownerId; }) || null;
+  }
+
+  function getAgentSkills(agent) {
+    return agent.skillIds.map(function (skillId) {
+      return mockData.skillsCollection.find(function (skill) { return skill.id === skillId; }) || null;
+    }).filter(Boolean);
+  }
+
+  function makeAgentButton(label, text, classes, handler) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = classes;
+    button.textContent = text;
+    button.setAttribute("aria-label", label);
+    button.addEventListener("click", handler);
+    return button;
+  }
+
+  function renderAgents() {
+    agentsList.replaceChildren();
+    agentsEmpty.classList.toggle("hidden", mockData.agentsCollection.length !== 0);
+    agentsList.classList.toggle("hidden", mockData.agentsCollection.length === 0);
+    mockData.agentsCollection.forEach(function (agent) {
+      const owner = getAgentOwner(agent);
+      const skills = getAgentSkills(agent);
+      const card = document.createElement("article");
+      card.id = "agent-card-" + agent.id;
+      card.className = "relative min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5";
+      const top = document.createElement("div");
+      top.className = "flex items-start justify-between gap-3";
+      const identity = document.createElement("div");
+      identity.className = "min-w-0";
+      const title = document.createElement("h2");
+      title.className = "break-words text-base font-semibold text-slate-950 dark:text-white";
+      title.textContent = agent.name;
+      const id = document.createElement("p");
+      id.className = "mt-1 font-mono text-xs text-slate-500 dark:text-slate-400";
+      id.textContent = agent.id;
+      identity.append(title, id);
+      const trailing = document.createElement("div");
+      trailing.className = "flex shrink-0 items-start gap-2";
+      const status = document.createElement("span");
+      const statusInfo = {
+        active: ["Activo", "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"],
+        failing: ["Fallando", "bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300"],
+        inactive: ["Inactivo", "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"]
+      }[agent.status] || ["Estado no disponible", "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"];
+      status.className = "inline-flex rounded-full px-2.5 py-1 text-xs font-medium " + statusInfo[1];
+      status.textContent = statusInfo[0];
+      const actions = document.createElement("div");
+      actions.className = "relative";
+      const menuButton = makeAgentButton("Acciones para " + agent.name, "⋮", "inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400", function () { toggleAgentMenu(agent.id); });
+      menuButton.id = "agent-actions-" + agent.id;
+      menuButton.setAttribute("aria-haspopup", "true");
+      menuButton.setAttribute("aria-expanded", String(openAgentMenuId === agent.id));
+      menuButton.setAttribute("aria-controls", "agent-menu-" + agent.id);
+      actions.appendChild(menuButton);
+      if (openAgentMenuId === agent.id) {
+        const menu = document.createElement("div");
+        menu.id = "agent-menu-" + agent.id;
+        menu.className = "absolute right-0 top-11 z-30 w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-700 dark:bg-slate-800";
+        menu.setAttribute("role", "group");
+        [["Configurar", false], ["Eliminar", true]].forEach(function (item) {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "block w-full rounded-md px-3 py-2 text-left text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 " + (item[1] ? "text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40" : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700");
+          option.textContent = item[0];
+          option.addEventListener("click", function () {
+            agentDialogReturnFocus = document.getElementById("agent-actions-" + agent.id);
+            openAgentMenuId = null;
+            renderAgents();
+            if (item[1]) openAgentDeleteDialog(agent.id);
+            else openAgentConfigDialog(agent.id);
+          });
+          menu.appendChild(option);
+        });
+        actions.appendChild(menu);
+      }
+      trailing.append(status, actions);
+      top.append(identity, trailing);
+      const ownerLine = document.createElement("p");
+      ownerLine.className = "mt-4 text-sm text-slate-600 dark:text-slate-300";
+      ownerLine.textContent = owner ? owner.name + " · " + owner.company : "Propietario no disponible · " + (agent.ownerCompany || "Empresa no disponible");
+      const skillsButton = makeAgentButton("Skills de " + agent.name, "", "mt-4 flex min-h-11 w-full items-center justify-between gap-3 rounded-lg bg-slate-50 px-3 py-2 text-left text-sm hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:bg-slate-950 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400", function () {
+        const panel = document.getElementById("agent-skills-" + agent.id);
+        const expanded = skillsButton.getAttribute("aria-expanded") === "true";
+        skillsButton.setAttribute("aria-expanded", String(!expanded));
+        if (expanded) {
+          panel.setAttribute("aria-hidden", "true");
+          panel.setAttribute("inert", "");
+          panel.classList.remove("max-h-40", "opacity-100");
+          panel.classList.add("max-h-0", "opacity-0");
+          panel.addEventListener("transitionend", function finishCollapse(event) {
+            if (event.target !== panel || skillsButton.getAttribute("aria-expanded") === "true") return;
+            panel.hidden = true;
+            panel.removeEventListener("transitionend", finishCollapse);
+          });
+        } else {
+          panel.hidden = false;
+          panel.removeAttribute("aria-hidden");
+          panel.removeAttribute("inert");
+          panel.classList.remove("max-h-0", "opacity-0");
+          panel.classList.add("max-h-40", "opacity-100");
+        }
+      });
+      skillsButton.id = "agent-skills-toggle-" + agent.id;
+      skillsButton.setAttribute("aria-expanded", "false");
+      skillsButton.setAttribute("aria-controls", "agent-skills-" + agent.id);
+      const skillsSummary = document.createElement("span");
+      skillsSummary.className = "flex flex-wrap items-center gap-2";
+      const label = document.createElement("span");
+      label.className = "font-medium text-slate-700 dark:text-slate-200";
+      label.textContent = "Skills · " + skills.length;
+      skillsSummary.appendChild(label);
+      skills.forEach(function (skill) {
+        const chip = document.createElement("span");
+        chip.className = "rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600 dark:border-slate-700 dark:text-slate-300";
+        chip.textContent = skill.name;
+        skillsSummary.appendChild(chip);
+      });
+      const chevron = document.createElement("span");
+      chevron.className = "shrink-0 text-slate-500";
+      chevron.setAttribute("aria-hidden", "true");
+      chevron.textContent = "⌄";
+      skillsButton.append(skillsSummary, chevron);
+      const skillsPanel = document.createElement("div");
+      skillsPanel.id = "agent-skills-" + agent.id;
+      skillsPanel.hidden = true;
+      skillsPanel.setAttribute("aria-hidden", "true");
+      skillsPanel.setAttribute("inert", "");
+      skillsPanel.className = "mt-2 max-h-0 overflow-hidden rounded-lg border border-slate-200 p-3 text-sm opacity-0 transition-all duration-200 dark:border-slate-800 motion-reduce:transition-none";
+      const skillsList = document.createElement("ul");
+      skillsList.className = "flex flex-wrap gap-2";
+      skills.forEach(function (skill) { const item = document.createElement("li"); item.textContent = skill.name; skillsList.appendChild(item); });
+      if (!skills.length) { const item = document.createElement("li"); item.textContent = "Sin habilidades disponibles"; skillsList.appendChild(item); }
+      skillsPanel.appendChild(skillsList);
+      card.append(top, ownerLine, skillsButton, skillsPanel);
+      agentsList.appendChild(card);
+    });
+  }
+
+  function toggleAgentMenu(agentId) {
+    openAgentMenuId = openAgentMenuId === agentId ? null : agentId;
+    renderAgents();
+    const button = document.getElementById("agent-actions-" + agentId);
+    if (button) button.focus();
+  }
+
+  function showAgentDialog(backdrop, dialog, initialFocus) {
+    activeAgentDialog = dialog;
+    backdrop.classList.remove("hidden");
+    backdrop.classList.add("flex");
+    document.getElementById(initialFocus).focus();
+  }
+
+  function closeAgentDialog(restoreFocus) {
+    if (activeAgentDialog === agentConfigDialog) {
+      agentConfigBackdrop.classList.add("hidden");
+      agentConfigBackdrop.classList.remove("flex");
+    } else if (activeAgentDialog === agentDeleteDialog) {
+      agentDeleteBackdrop.classList.add("hidden");
+      agentDeleteBackdrop.classList.remove("flex");
+    }
+    activeAgentDialog = null;
+    pendingAgentId = null;
+    if (restoreFocus === false) return;
+    if (agentDialogReturnFocus && agentDialogReturnFocus.isConnected) agentDialogReturnFocus.focus();
+    else document.getElementById("agentes-title").focus();
+  }
+
+  function openAgentConfigDialog(agentId) {
+    const agent = mockData.agentsCollection.find(function (entry) { return entry.id === agentId; });
+    if (!agent) return;
+    const owner = getAgentOwner(agent);
+    document.getElementById("agent-config-title").textContent = "Configurar " + agent.name;
+    document.getElementById("agent-config-id").textContent = agent.id;
+    document.getElementById("agent-config-name").textContent = agent.name;
+    document.getElementById("agent-config-owner").textContent = owner ? owner.name + " · " + owner.company : "Propietario no disponible · " + (agent.ownerCompany || "Empresa no disponible");
+    document.getElementById("agent-config-status").textContent = ({ active: "Activo", failing: "Fallando", inactive: "Inactivo" })[agent.status] || "Estado no disponible";
+    document.getElementById("agent-system-prompt").value = agent.systemPrompt;
+    pendingAgentId = agent.id;
+    showAgentDialog(agentConfigBackdrop, agentConfigDialog, "agent-system-prompt");
+  }
+
+  function saveAgentConfig() {
+    const agent = mockData.agentsCollection.find(function (entry) { return entry.id === pendingAgentId; });
+    if (!agent) return closeAgentDialog(true);
+    agent.systemPrompt = document.getElementById("agent-system-prompt").value;
+    const name = agent.name;
+    closeAgentDialog(true);
+    document.getElementById("agents-announcement").textContent = "Configuración de " + name + " guardada en esta sesión.";
+  }
+
+  function openAgentDeleteDialog(agentId) {
+    const agent = mockData.agentsCollection.find(function (entry) { return entry.id === agentId; });
+    if (!agent) return;
+    pendingAgentId = agent.id;
+    document.getElementById("agent-delete-description").textContent = "Se eliminará " + agent.name + " (" + agent.id + ") de esta sesión de demostración.";
+    showAgentDialog(agentDeleteBackdrop, agentDeleteDialog, "agent-delete-cancel");
+  }
+
+  function deleteSelectedAgent() {
+    const deleted = mockData.agentsCollection.find(function (entry) { return entry.id === pendingAgentId; });
+    if (!deleted) return closeAgentDialog(true);
+    const deletedIndex = mockData.agentsCollection.indexOf(deleted);
+    mockData.agentsCollection = mockData.agentsCollection.filter(function (entry) { return entry.id !== pendingAgentId; });
+    openAgentMenuId = null;
+    closeAgentDialog(false);
+    renderAgents();
+    renderKpis();
+    document.getElementById("agents-announcement").textContent = deleted.name + " se eliminó de esta sesión.";
+    const nextAgent = mockData.agentsCollection[Math.min(deletedIndex, mockData.agentsCollection.length - 1)];
+    const target = nextAgent ? document.getElementById("agent-actions-" + nextAgent.id) : agentsEmpty;
+    (target || document.getElementById("agentes-title")).focus();
+  }
+
+  function bindAgentDialog(backdrop, dialog, closeButtonId) {
+    document.getElementById(closeButtonId).addEventListener("click", function () { closeAgentDialog(true); });
+    let pointerStartedOnBackdrop = false;
+    backdrop.addEventListener("pointerdown", function (event) { pointerStartedOnBackdrop = event.target === backdrop; });
+    backdrop.addEventListener("click", function (event) {
+      const shouldClose = pointerStartedOnBackdrop && event.target === backdrop && activeAgentDialog === dialog;
+      pointerStartedOnBackdrop = false;
+      if (shouldClose) closeAgentDialog(true);
+    });
+    dialog.addEventListener("keydown", function (event) {
+      if (event.key !== "Tab") return;
+      const controls = Array.from(dialog.querySelectorAll("button:not([disabled]), textarea:not([disabled])"))
+        .filter(function (element) { return element.offsetParent !== null; });
+      if (!controls.length) return;
+      if (event.shiftKey && document.activeElement === controls[0]) { event.preventDefault(); controls[controls.length - 1].focus(); }
+      else if (!event.shiftKey && document.activeElement === controls[controls.length - 1]) { event.preventDefault(); controls[0].focus(); }
+    });
+  }
+
+  bindAgentDialog(agentConfigBackdrop, agentConfigDialog, "agent-config-close");
+  bindAgentDialog(agentDeleteBackdrop, agentDeleteDialog, "agent-delete-cancel");
+  document.getElementById("agent-config-cancel").addEventListener("click", function () { closeAgentDialog(true); });
+  document.getElementById("agent-config-save").addEventListener("click", saveAgentConfig);
+  document.getElementById("agent-delete-confirm").addEventListener("click", deleteSelectedAgent);
+
+  document.addEventListener("click", function (event) {
+    if (!openAgentMenuId) return;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    if (path.includes(agentsList) || agentsList.contains(event.target)) return;
+    openAgentMenuId = null;
+    renderAgents();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && activeAgentDialog) {
+      event.stopImmediatePropagation();
+      closeAgentDialog(true);
+      return;
+    }
+    if (event.key === "Escape" && openAgentMenuId) {
+      const menuId = openAgentMenuId;
+      openAgentMenuId = null;
+      renderAgents();
+      const button = document.getElementById("agent-actions-" + menuId);
+      if (button) button.focus();
+    }
+  });
+
+  renderAgents();
+
   renderUsers();
   document.getElementById("user-dialog-close").addEventListener("click", function () { closeUserDialog(true); });
   document.getElementById("user-delete-cancel").addEventListener("click", function () { closeUserDialog(true); });
@@ -296,6 +579,8 @@
       renderUsers();
     }
     if (!userBackdrop.classList.contains("hidden")) closeUserDialog(false);
+    if (openAgentMenuId) { openAgentMenuId = null; renderAgents(); }
+    if (activeAgentDialog) closeAgentDialog(false);
 
     pages.forEach(function (page) {
       page.hidden = page.dataset.page !== viewId;
