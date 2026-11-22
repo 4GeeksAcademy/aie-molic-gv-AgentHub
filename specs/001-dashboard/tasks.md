@@ -1,8 +1,8 @@
 # TASKS-001 — Tareas de implementación futura
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
-- **Estado:** backlog para aprobación; **no ejecutar en esta fase**.
-- **Convención:** todas las tareas empiezan sin marcar. Cada tarea indica requisitos, archivos, dependencias y un resultado verificable. Los archivos referenciados son destinos futuros de implementación, no modificados al crear este documento. Los KPI de agentes deben derivarse de la fuente mock compartida definida en `spec.md` §6 y `plan.md` §3.3; Tailwind se carga desde CDN y el modo oscuro usa utilidades `dark:`.
+- **Estado:** implementación parcial; T001–T008 completadas. No avanzar tareas posteriores en este corte.
+- **Convención:** cada tarea indica requisitos, archivos, dependencias y un resultado verificable. Solo se marca `[x]` tras comprobarlo. Los KPI de agentes deben derivarse de la fuente mock compartida definida en `spec.md` §6 y `plan.md` §3.3; Tailwind se carga desde CDN y el modo oscuro usa utilidades `dark:`.
 
 ## 1. Estructura HTML
 
@@ -11,14 +11,14 @@
 - **Archivos:** `index.html`.
 - **Depende de:** aprobación de SPEC/PLAN.
 - **Criterio verificable:** HTML5 estático con landmarks y headings planificados; Tailwind Browser/CDN se carga directamente desde `index.html`; sin `<style>`, atributos `style`, CSS personalizado, frameworks, configuración/herramientas de build ni paquetes instalados.
-- [ ]
+- [x]
 
 ### T002 — Definir regiones de vista y destinos
 - **Requisitos:** FR-002, FR-003, FR-011; AC-002, AC-003.
 - **Archivos:** `index.html`.
 - **Depende de:** T001.
 - **Criterio verificable:** existe una región principal para una vista visible; quedan representados Panel y cinco placeholders neutrales con IDs/etiquetas únicos y orden contractual; no se incorporan funcionalidades de dominio.
-- [ ]
+- [x]
 
 ## 2. Layout / shell
 
@@ -27,14 +27,15 @@
 - **Archivos:** `index.html`.
 - **Depende de:** T001.
 - **Criterio verificable:** sidebar, topbar y `main` se distribuyen como shell único; cambiar vista no reemplaza shell; anchos y superficies responden a ambos temas.
-- [ ]
+- [x]
 
 ### T004 — Añadir contexto y headings del Dashboard
 - **Requisitos:** FR-003, FR-004; VIS-004; AC-001, AC-003, AC-010.
 - **Archivos:** `index.html`, `app.js`.
 - **Depende de:** T002, T003.
 - **Criterio verificable:** Panel tiene título visible/heading principal; al navegar el contexto de título se sincroniza con la sección activa y conserva jerarquía semántica.
-- [ ]
+- **Progreso:** el heading inicial y el contexto/título de topbar se mantienen sincronizados con la vista activa.
+- [x]
 
 ## 3. Sidebar / navegación
 
@@ -43,14 +44,14 @@
 - **Archivos:** `index.html`, `app.js`.
 - **Depende de:** T002, T003.
 - **Criterio verificable:** seis enlaces, en orden Panel, Usuarios, Agentes, Habilidades, Contrataciones, Registro de errores; todos tienen nombre visible, son operables y el activo expone `aria-current="page"`.
-- [ ]
+- [x]
 
 ### T006 — Implementar navegación local sin reload
 - **Requisitos:** FR-002, FR-003, FR-011; AC-002, AC-003.
 - **Archivos:** `app.js`.
 - **Depende de:** T005.
 - **Criterio verificable:** seleccionar cada enlace con teclado o puntero muestra la región correspondiente, actualiza título/activo, conserva shell y tema y no recarga; destinos futuros muestran solo el mensaje neutral especificado.
-- [ ]
+- [x]
 
 ## 4. Topbar / tema
 
@@ -59,14 +60,16 @@
 - **Archivos:** `index.html`.
 - **Depende de:** T003.
 - **Criterio verificable:** topbar presenta contexto actual y botón real de tema con nombre accesible, estado expuesto y foco visible.
-- [ ]
+- [x]
 
 ### T008 — Implementar inicialización y alternancia de tema
 - **Requisitos:** FR-005; VIS-002, VIS-007; AC-006, AC-007, AC-012.
 - **Archivos:** `app.js`, `index.html`.
 - **Depende de:** T007.
 - **Criterio verificable:** se respeta almacenamiento válido y, en su ausencia, `prefers-color-scheme`; toggle cambia clase raíz y las superficies/estados de tema se estilizan con utilidades Tailwind base y `dark:`; Tailwind proviene de CDN, sin CSS personalizado ni build; selección sobrevive recarga sin persistir datos operativos; movimiento respeta preferencia reducida.
-- [ ]
+- **Progreso:** CDN fijado a Tailwind CSS v3.4.17; configuración `tailwind.config` colocada después de cargar el CDN y antes del script defer de la app. Se eliminó la función temporal de diagnóstico tras la validación.
+- **Validación manual:** el usuario confirmó en Live Server que los modos claro y oscuro funcionan y que el cambio afecta a toda la interfaz.
+- [x]
 
 ## 5. KPI
 
