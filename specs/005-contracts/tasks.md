@@ -1,10 +1,11 @@
-# TASKS-005 — Implementación futura: Contrataciones
+# TASKS-005 — Implementación y validación: Contrataciones
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
 - **Estado:** implementación completada con validación manual parcial en Live Server; las tareas marcadas reflejan evidencia disponible. Permanecen pendientes las pruebas no confirmadas explícitamente y las validaciones cubiertas por tareas sin marcar.
 - **Convención:** cada tarea incluye requisitos, archivos previstos, dependencias y criterio verificable. No marcar `[x]` sin evidencia real.
 - **Archivos previstos en implementación futura:** `index.html`, `app.js`. Este documento SDD no autoriza tocar otras vistas ni fuentes.
 - **Secuencia:** las diez fases siguen el orden solicitado; tareas posteriores pueden depender de fases anteriores.
+- **Auditoría técnica:** el dropdown usa `menu.style.left/top` para anclarse al activador; esto genera estilos inline en runtime y contradice la restricción de `SPECS.md` §2.1. El comportamiento actual no se ha modificado porque una alternativa debe conservar y probar el anclaje, clipping y viewport.
 
 ## Fase 1 — Modelo de contratos y snapshots
 

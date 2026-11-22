@@ -1,9 +1,9 @@
-# TASKS-003 — Tareas de implementación futura: Gestión de agentes
+# TASKS-003 — Implementación y validación: Gestión de agentes
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
-- **Estado:** implementación de la vista completada en los archivos previstos; validaciones funcionales y visuales en navegador pendientes.
+- **Estado:** implementación de la vista incorporada; validaciones funcionales y visuales en navegador pendientes.
 - **Convención:** tareas ordenadas, pequeñas y verificables; cada una incluye ID, requisitos, archivos, dependencia y criterio de finalización. Marcar `[x]` únicamente tras completar y comprobar en la fase de implementación.
-- **Evidencia:** `node --check app.js`, `git diff --check` y diagnósticos del editor sin errores. No se encontró navegador ni harness de pruebas en el workspace; las pruebas reales de interacción, foco y viewports permanecen pendientes.
+- **Evidencia estática:** `node --check app.js` y `git diff --check` pasan en las comprobaciones registradas; no se encontró navegador ni harness de pruebas en el workspace. Las pruebas reales de interacción, foco y viewports permanecen pendientes. Auditoría técnica: el dropdown de Contrataciones asigna `menu.style.left/top`, generando estilos inline en runtime contra `SPECS.md` §2.1; no se cambia el menú como parte de esta actualización documental.
 
 ## Fase 1 — Modelo canónico
 

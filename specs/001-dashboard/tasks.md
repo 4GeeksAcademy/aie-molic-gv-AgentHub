@@ -1,7 +1,7 @@
-# TASKS-001 — Tareas de implementación futura
+# TASKS-001 — Implementación y validación: Dashboard
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
-- **Estado:** T001–T018 completadas; sin tareas pendientes.
+- **Estado:** implementación y checks registrados; queda pendiente una matriz visual reproducible de responsive/accesibilidad. La validación manual de Live Server descrita en T017 corresponde únicamente a lo que el usuario confirmó durante el desarrollo.
 - **Convención:** cada tarea indica requisitos, archivos, dependencias y un resultado verificable. Solo se marca `[x]` tras comprobarlo. Los KPI de agentes deben derivarse de la fuente mock compartida definida en `spec.md` §6 y `plan.md` §3.3; Tailwind se carga desde CDN y el modo oscuro usa utilidades `dark:`.
 
 ## 1. Estructura HTML
@@ -149,4 +149,4 @@
 - **Archivos:** `index.html`, `app.js`.
 - **Depende de:** T001–T017.
 - **Criterio verificable:** revisión de archivos confirma HTML5 + carga directa de Tailwind Browser/CDN + JavaScript vanilla; tema oscuro implementado con clase raíz `dark` y utilidades Tailwind `dark:`; no hay framework, TypeScript, API de aplicación, herramientas/configuración de build, dependencias, CSS propio ni estilos inline; abre estáticamente sin instalación/compilación (la carga de estilos CDN requiere red).
-- [x] Inspección de archivos y búsquedas: HTML5 + Tailwind CDN + JS vanilla; sin estilos inline/`<style>`, CSS propio, frameworks, llamadas de API, charting, dependencias ni archivos de build. `index.html` carga scripts directamente y puede abrirse como estático con acceso de red para CDN.
+- [x] Inspección estática: HTML5 + Tailwind CDN + JS vanilla; sin atributos `style` en el HTML, `<style>`, CSS propio, frameworks, llamadas de API, charting, dependencias ni archivos de build. Nota de auditoría: `app.js` asigna `menu.style.left/top` al dropdown de Contrataciones, lo que genera estilos inline en runtime y contradice la restricción general de `SPECS.md` §2.1; no se cambia el posicionamiento en esta fase documental. `index.html` puede servirse estáticamente con acceso de red para CDN.

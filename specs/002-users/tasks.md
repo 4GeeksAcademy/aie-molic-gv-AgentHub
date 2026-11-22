@@ -1,9 +1,9 @@
-# TASKS-002 — Tareas de implementación futura: Gestión de usuarios
+# TASKS-002 — Implementación y validación: Gestión de usuarios
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
-- **Estado:** pendientes de aprobación e implementación.
+- **Estado:** la implementación de Usuarios está incorporada en `index.html` y `app.js`; siguen pendientes validaciones funcionales y manuales enumeradas abajo y en las tareas sin marcar.
 - **Convención:** cada tarea tiene ID único, requisitos, archivos, dependencia y criterio de finalización verificable. Marcar `[x]` solo tras completar y comprobar en fase de implementación. Todas comienzan sin marcar.
-- **Restricción de esta ejecución:** este documento planifica; no autoriza modificar `index.html`, `app.js` ni ejecutar tareas de código.
+- **Alcance:** conservar los requisitos aprobados; el progreso y la evidencia de implementación se registran sin convertir pruebas no realizadas en aceptaciones.
 
 ### Evidencia de validación manual (Live Server)
 

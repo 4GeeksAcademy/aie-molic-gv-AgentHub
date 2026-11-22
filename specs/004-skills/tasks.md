@@ -1,9 +1,9 @@
-# TASKS-004 — Tareas de implementación futura: Skills
+# TASKS-004 — Implementación y validación: Skills
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
 - **Estado:** implementación estática completada para el catálogo y sus interacciones; validaciones de navegador/responsive pendientes.
 - **Convención:** cada tarea indica requisitos, archivos previstos, dependencias y criterio verificable. Marcar `[x]` únicamente tras evidencia real durante implementación/validación.
-- **Implementación:** `index.html` y `app.js`; `node --check app.js` y `git diff --check` pasan. No hay navegador/harness disponible para validar interacciones reales, foco y viewports.
+- **Implementación:** `index.html` y `app.js`; los checks estáticos registrados son `node --check app.js` y `git diff --check`. No hay navegador/harness disponible para validar interacciones reales, foco y viewports. Auditoría técnica: el dropdown de Contrataciones asigna `menu.style.left/top`, generando estilos inline en runtime y contradiciendo `SPECS.md` §2.1; no se modifica esa funcionalidad en esta actualización documental.
 - **Archivos de implementación previstos:** `index.html`, `app.js`. `specs/004-skills/tasks.md` solo se actualizará para registrar progreso. No modificar specs anteriores, `SPECS.md` o fuentes Stitch.
 
 ## Fase 1 — Modelo compartido de skills

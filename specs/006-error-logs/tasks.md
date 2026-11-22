@@ -1,7 +1,7 @@
-# TASKS-006 — Implementación futura: Registro de errores
+# TASKS-006 — Implementación y validación: Registro de errores
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
-- **Estado:** implementación local en curso; validaciones manuales pendientes donde se indica al final.
+- **Estado:** implementación local incorporada; validaciones manuales pendientes donde se indica al final.
 - **Convención:** marcar `[x]` solo tras ejecutar y registrar evidencia del criterio completo.
 - **Archivos previstos:** `index.html`, `app.js` y este archivo únicamente para seguimiento.
 - **Secuencia:** seguir dependencias del SDD aprobado.
@@ -254,6 +254,7 @@
 ## Evidencia de implementación
 
 - Implementado en `app.js` e `index.html`; la especificación y plan aprobados no se modificaron. Menús de Usuarios, Agentes y Skills usan absolute dentro de tarjeta relativa; Contrataciones ya calcula ubicación con `getBoundingClientRect()` y no usa el `fixed` sin coordenadas hallado en Errores. No se modificaron.
+- Auditoría técnica: el menú de Contrataciones asigna `menu.style.left/top`, generando estilos inline en runtime, lo que contradice `SPECS.md` §2.1. Se registra como hallazgo; el posicionamiento existente no se altera sin comprobar una alternativa equivalente.
 - Datos canónicos cotejados con `SPECS.md` §8: seis IDs ordenados, timestamps UTC a minuto, agente, tipo, descripción y estado. Mensajes y trazas son fixtures ficticios redactados localmente (tres líneas cada traza), no telemetría.
 - Validación ejecutada: `node --check app.js` y `git diff --check` pasaron. No hay Chromium/Chrome/Firefox ni Playwright/Puppeteer/jsdom disponibles en el entorno; no hubo validación visual/interactiva y el posicionamiento no se considera visualmente validado.
 - Pendiente de probar en navegador real (incluido Live Server): primera/intermedia/última fila, borde derecho, scroll vertical/horizontal, 1440/1024/768/375, ambos temas, Escape/click fuera/acciones/foco; además lector de pantalla, reduced motion, resolución/recarga, agente ausente y regresión de las cinco secciones.

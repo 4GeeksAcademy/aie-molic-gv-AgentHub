@@ -252,6 +252,7 @@
   });
 
   function renderContracts() {
+    document.querySelectorAll('[id^="contract-menu-"]').forEach(function (menu) { menu.remove(); });
     contractsBody.replaceChildren();
     contractsEmpty.classList.toggle("hidden", mockData.contractsCollection.length !== 0);
     mockData.contractsCollection.forEach(function (contract) {
@@ -299,17 +300,37 @@
       if (openContractMenuId === contract.id) {
         const menu = document.createElement("div"); menu.id = "contract-menu-" + contract.id;
         menu.className = "fixed z-[90] w-40 rounded-lg border border-slate-200 bg-white p-1 text-left shadow-xl dark:border-slate-700 dark:bg-slate-800"; menu.setAttribute("role", "group");
-        const buttonRect = button.getBoundingClientRect();
-        const menuWidth = 160;
-        const menuHeight = 44;
-        const left = Math.max(8, Math.min(buttonRect.right - menuWidth, window.innerWidth - menuWidth - 8));
-        const top = buttonRect.bottom + menuHeight + 4 > window.innerHeight ? Math.max(8, buttonRect.top - menuHeight - 4) : buttonRect.bottom + 4;
-        menu.style.left = left + "px"; menu.style.top = top + "px";
+        menu.classList.add("left-0", "top-0");
         const detail = document.createElement("button"); detail.type = "button"; detail.className = "block w-full rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-200 dark:hover:bg-slate-700"; detail.textContent = "Ver detalle";
-        detail.addEventListener("click", function () { contractDialogReturnFocus = document.getElementById(button.id); openContractMenuId = null; renderContracts(); openContractDetail(contract.id); }); menu.appendChild(detail); actions.appendChild(menu);
+        detail.addEventListener("click", function () { contractDialogReturnFocus = document.getElementById(button.id); openContractMenuId = null; renderContracts(); openContractDetail(contract.id); }); menu.appendChild(detail); document.body.appendChild(menu);
       }
       row.append(client, agentCell, skills, start, end, amount, actions); contractsBody.appendChild(row);
     });
+    positionContractMenu();
+  }
+
+  function positionContractMenu() {
+    if (!openContractMenuId) return;
+    const button = document.getElementById("contract-actions-" + openContractMenuId);
+    const menu = document.getElementById("contract-menu-" + openContractMenuId);
+    if (!button || !menu) return;
+    const rect = button.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const margin = 8;
+    const gap = 4;
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
+    const left = Math.max(margin, Math.min(rect.right - menuRect.width, viewportWidth - menuRect.width - margin));
+    const below = viewportHeight - rect.bottom;
+    const above = rect.top;
+    const placeBelow = below >= menuRect.height + gap || below >= above;
+    const top = placeBelow
+      ? Math.min(rect.bottom + gap, viewportHeight - menuRect.height - margin)
+      : Math.max(margin, rect.top - menuRect.height - gap);
+    Array.from(menu.classList).forEach(function (className) {
+      if (/^(left|top)-\[\d+px\]$/.test(className)) menu.classList.remove(className);
+    });
+    menu.classList.add("left-[" + Math.round(left) + "px]", "top-[" + Math.round(top) + "px]");
   }
 
   function toggleContractMenu(contractId) {
@@ -354,6 +375,9 @@
   }
 
   renderContracts();
+  window.addEventListener("resize", positionContractMenu);
+  window.addEventListener("scroll", positionContractMenu, true);
+  window.addEventListener("orientationchange", positionContractMenu);
   document.getElementById("contract-detail-close").addEventListener("click", function () { closeContractDetail(true); });
   contractBackdrop.addEventListener("pointerdown", function (event) { contractBackdropPointerStarted = event.target === contractBackdrop; });
   contractBackdrop.addEventListener("click", function (event) { const shouldClose = contractBackdropPointerStarted && event.target === contractBackdrop; contractBackdropPointerStarted = false; if (shouldClose) closeContractDetail(true); });
@@ -367,7 +391,8 @@
   document.addEventListener("click", function (event) {
     if (!openContractMenuId) return;
     const path = typeof event.composedPath === "function" ? event.composedPath() : [];
-    if (path.includes(contractsBody) || contractsBody.contains(event.target)) return;
+    const menu = document.getElementById("contract-menu-" + openContractMenuId);
+    if ((menu && (path.includes(menu) || menu.contains(event.target))) || path.includes(contractsBody) || contractsBody.contains(event.target)) return;
     const id = openContractMenuId; openContractMenuId = null; renderContracts();
     const button = document.getElementById("contract-actions-" + id); if (button) button.focus();
   });
@@ -1107,6 +1132,11 @@
     if (viewId !== "registro-de-errores") {
       if (openErrorMenuId) closeErrorMenu(false);
       if (!errorBackdrop.classList.contains("hidden")) closeErrorDetail(false);
+    }
+
+    if (viewId !== "contrataciones" && openContractMenuId) {
+      openContractMenuId = null;
+      renderContracts();
     }
 
     if (openUserMenuId) {
