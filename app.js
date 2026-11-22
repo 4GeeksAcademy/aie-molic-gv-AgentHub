@@ -14,10 +14,10 @@
       { id: "A-004", name: "Verde Workflow", ownerId: "U-004", ownerCompany: "Verde & Co.", status: "inactive", skillIds: ["S-004", "S-003"], systemPrompt: "Eres Verde Workflow, asistente para organizar procesos repetibles de Verde & Co. Describe los pasos necesarios de forma ordenada y confirma las dependencias conocidas. No afirmes haber ejecutado acciones externas." }
     ],
     skillsCollection: [
-      { id: "S-001", name: "Web Research" },
-      { id: "S-002", name: "Data Analysis" },
-      { id: "S-003", name: "Customer Support" },
-      { id: "S-004", name: "Workflow Automation" }
+      { id: "S-001", name: "Web Research", category: "Investigación", description: "Busca, compara y sintetiza información web." },
+      { id: "S-002", name: "Data Analysis", category: "Analítica", description: "Analiza conjuntos de datos y resume hallazgos." },
+      { id: "S-003", name: "Customer Support", category: "Atención", description: "Clasifica consultas y redacta respuestas de soporte." },
+      { id: "S-004", name: "Workflow Automation", category: "Automatización", description: "Coordina pasos repetibles y tareas entre herramientas." }
     ],
     usersCollection: [
       { id: "U-001", name: "Lucía Moreno", email: "lucia.moreno@northstar.example", company: "Northstar Labs", plan: "Enterprise", status: "Activo", signupDate: "2025-03-12" },
@@ -47,6 +47,12 @@
   const userDialog = document.getElementById("user-dialog");
   const agentsList = document.getElementById("agents-list");
   const agentsEmpty = document.getElementById("agents-empty-state");
+  const skillsList = document.getElementById("skills-list");
+  const skillsEmpty = document.getElementById("skills-empty-state");
+  const skillDetailBackdrop = document.getElementById("skill-detail-backdrop");
+  const skillDetailDialog = document.getElementById("skill-detail-dialog");
+  const skillDeleteBackdrop = document.getElementById("skill-delete-backdrop");
+  const skillDeleteDialog = document.getElementById("skill-delete-dialog");
   const agentConfigBackdrop = document.getElementById("agent-config-backdrop");
   const agentConfigDialog = document.getElementById("agent-config-dialog");
   const agentDeleteBackdrop = document.getElementById("agent-delete-backdrop");
@@ -59,6 +65,224 @@
   let pendingAgentId = null;
   let activeAgentDialog = null;
   let agentDialogReturnFocus = null;
+  let openSkillMenuId = null;
+  let pendingSkillId = null;
+  let activeSkillDialog = null;
+  let skillDialogReturnFocus = null;
+
+  function getAgentsForSkill(skillId) {
+    return mockData.agentsCollection.filter(function (agent) { return agent.skillIds.includes(skillId); });
+  }
+
+  function renderSkills() {
+    skillsList.replaceChildren();
+    skillsEmpty.classList.toggle("hidden", mockData.skillsCollection.length !== 0);
+    skillsList.classList.toggle("hidden", mockData.skillsCollection.length === 0);
+    mockData.skillsCollection.forEach(function (skill) {
+      const agents = getAgentsForSkill(skill.id);
+      const card = document.createElement("article");
+      card.className = "relative min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900";
+      const header = document.createElement("div");
+      header.className = "flex items-start justify-between gap-3";
+      const info = document.createElement("div");
+      info.className = "min-w-0";
+      const title = document.createElement("h2");
+      title.className = "break-words text-base font-semibold text-slate-950 dark:text-white";
+      title.textContent = skill.name;
+      const metadata = document.createElement("p");
+      metadata.className = "mt-1 text-xs text-slate-500 dark:text-slate-400";
+      metadata.textContent = skill.id + " · " + skill.category;
+      const description = document.createElement("p");
+      description.className = "mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300";
+      description.textContent = skill.description;
+      info.append(title, metadata, description);
+      const actions = document.createElement("div");
+      actions.className = "relative shrink-0";
+      const button = document.createElement("button");
+      button.type = "button";
+      button.id = "skill-actions-" + skill.id;
+      button.className = "inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400";
+      button.textContent = "⋮";
+      button.setAttribute("aria-label", "Acciones para " + skill.name);
+      button.setAttribute("aria-haspopup", "true");
+      button.setAttribute("aria-expanded", String(openSkillMenuId === skill.id));
+      button.setAttribute("aria-controls", "skill-menu-" + skill.id);
+      button.addEventListener("click", function () { toggleSkillMenu(skill.id); });
+      actions.appendChild(button);
+      if (openSkillMenuId === skill.id) {
+        const menu = document.createElement("div");
+        menu.id = "skill-menu-" + skill.id;
+        menu.className = "absolute right-0 top-11 z-30 w-40 rounded-lg border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-700 dark:bg-slate-800";
+        menu.setAttribute("role", "group");
+        [["Ver detalle", false], ["Eliminar", true]].forEach(function (item) {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "block w-full rounded-md px-3 py-2 text-left text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 " + (item[1] ? "text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40" : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700");
+          option.textContent = item[0];
+          option.addEventListener("click", function () {
+            skillDialogReturnFocus = document.getElementById(button.id);
+            openSkillMenuId = null;
+            renderSkills();
+            if (item[1]) openSkillDeleteDialog(skill.id);
+            else openSkillDetailDialog(skill.id);
+          });
+          menu.appendChild(option);
+        });
+        actions.appendChild(menu);
+      }
+      header.append(info, actions);
+      const relation = document.createElement("div");
+      relation.className = "mt-4 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-slate-50 p-3 dark:bg-slate-950";
+      const associated = document.createElement("p");
+      associated.className = "min-w-0 text-sm text-slate-600 dark:text-slate-300";
+      associated.textContent = agents.length ? agents.map(function (agent) { return agent.name; }).join(", ") : "Sin agentes asociados";
+      const count = document.createElement("span");
+      count.className = "shrink-0 rounded-full bg-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200";
+      count.textContent = agents.length + (agents.length === 1 ? " agente" : " agentes");
+      relation.append(associated, count);
+      card.append(header, relation);
+      skillsList.appendChild(card);
+    });
+  }
+
+  function toggleSkillMenu(skillId) {
+    openSkillMenuId = openSkillMenuId === skillId ? null : skillId;
+    renderSkills();
+    const button = document.getElementById("skill-actions-" + skillId);
+    if (button) button.focus();
+  }
+
+  function skillField(container, labelText, valueText) {
+    const wrapper = document.createElement("div");
+    const term = document.createElement("dt");
+    term.className = "text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400";
+    term.textContent = labelText;
+    const value = document.createElement("dd");
+    value.className = "mt-1 break-words text-sm text-slate-900 dark:text-slate-100";
+    value.textContent = valueText;
+    wrapper.append(term, value);
+    container.appendChild(wrapper);
+  }
+
+  function showSkillDialog(backdrop, dialog, initialFocus) {
+    activeSkillDialog = dialog;
+    backdrop.classList.remove("hidden");
+    backdrop.classList.add("flex");
+    document.getElementById(initialFocus).focus();
+  }
+
+  function openSkillDetailDialog(skillId) {
+    const skill = mockData.skillsCollection.find(function (entry) { return entry.id === skillId; });
+    if (!skill) return;
+    const agents = getAgentsForSkill(skill.id);
+    document.getElementById("skill-detail-title").textContent = skill.name;
+    document.getElementById("skill-detail-id").textContent = skill.id;
+    const fields = document.getElementById("skill-detail-fields");
+    fields.replaceChildren();
+    skillField(fields, "Categoría", skill.category);
+    skillField(fields, "Descripción", skill.description);
+    skillField(fields, "Agentes que la utilizan", String(agents.length));
+    const list = document.getElementById("skill-detail-agents");
+    list.replaceChildren();
+    if (!agents.length) {
+      const empty = document.createElement("li");
+      empty.textContent = "Sin agentes asociados";
+      list.appendChild(empty);
+    } else agents.forEach(function (agent) {
+      const item = document.createElement("li");
+      item.textContent = agent.name + " (" + agent.id + ")";
+      list.appendChild(item);
+    });
+    showSkillDialog(skillDetailBackdrop, skillDetailDialog, "skill-detail-close");
+  }
+
+  function openSkillDeleteDialog(skillId) {
+    const skill = mockData.skillsCollection.find(function (entry) { return entry.id === skillId; });
+    if (!skill) return;
+    pendingSkillId = skill.id;
+    document.getElementById("skill-delete-description").textContent = "Se eliminará " + skill.name + " (" + skill.id + ") de esta sesión de demostración.";
+    showSkillDialog(skillDeleteBackdrop, skillDeleteDialog, "skill-delete-cancel");
+  }
+
+  function closeSkillDialog(restoreFocus) {
+    if (activeSkillDialog === skillDetailDialog) {
+      skillDetailBackdrop.classList.add("hidden");
+      skillDetailBackdrop.classList.remove("flex");
+    } else if (activeSkillDialog === skillDeleteDialog) {
+      skillDeleteBackdrop.classList.add("hidden");
+      skillDeleteBackdrop.classList.remove("flex");
+    }
+    activeSkillDialog = null;
+    pendingSkillId = null;
+    if (restoreFocus === false) return;
+    if (skillDialogReturnFocus && skillDialogReturnFocus.isConnected) skillDialogReturnFocus.focus();
+    else document.getElementById("habilidades-title").focus();
+  }
+
+  function deleteSelectedSkill() {
+    if (!pendingSkillId) return;
+    const removed = mockData.skillsCollection.find(function (skill) { return skill.id === pendingSkillId; });
+    if (!removed) return closeSkillDialog(true);
+    const deletedIndex = mockData.skillsCollection.indexOf(removed);
+    mockData.skillsCollection = mockData.skillsCollection.filter(function (skill) { return skill.id !== pendingSkillId; });
+    mockData.agentsCollection.forEach(function (agent) {
+      agent.skillIds = agent.skillIds.filter(function (skillId) { return skillId !== pendingSkillId; });
+    });
+    openSkillMenuId = null;
+    closeSkillDialog(false);
+    renderSkills();
+    renderAgents();
+    document.getElementById("skills-announcement").textContent = removed.name + " se eliminó de esta sesión.";
+    const next = mockData.skillsCollection[Math.min(deletedIndex, mockData.skillsCollection.length - 1)];
+    const target = next ? document.getElementById("skill-actions-" + next.id) : skillsEmpty;
+    (target || document.getElementById("habilidades-title")).focus();
+  }
+
+  function bindSkillDialog(backdrop, dialog, closeButtonId) {
+    document.getElementById(closeButtonId).addEventListener("click", function () { closeSkillDialog(true); });
+    let pointerStartedOnBackdrop = false;
+    backdrop.addEventListener("pointerdown", function (event) { pointerStartedOnBackdrop = event.target === backdrop; });
+    backdrop.addEventListener("click", function (event) {
+      const shouldClose = pointerStartedOnBackdrop && event.target === backdrop && activeSkillDialog === dialog;
+      pointerStartedOnBackdrop = false;
+      if (shouldClose) closeSkillDialog(true);
+    });
+    dialog.addEventListener("keydown", function (event) {
+      if (event.key !== "Tab") return;
+      const controls = Array.from(dialog.querySelectorAll("button:not([disabled])"));
+      if (!controls.length) return;
+      if (event.shiftKey && document.activeElement === controls[0]) { event.preventDefault(); controls[controls.length - 1].focus(); }
+      else if (!event.shiftKey && document.activeElement === controls[controls.length - 1]) { event.preventDefault(); controls[0].focus(); }
+    });
+  }
+
+  bindSkillDialog(skillDetailBackdrop, skillDetailDialog, "skill-detail-close");
+  bindSkillDialog(skillDeleteBackdrop, skillDeleteDialog, "skill-delete-cancel");
+  document.getElementById("skill-delete-confirm").addEventListener("click", deleteSelectedSkill);
+  document.getElementById("skill-delete-cancel").addEventListener("click", function () { closeSkillDialog(true); });
+  document.addEventListener("click", function (event) {
+    if (!openSkillMenuId) return;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    if (path.includes(skillsList) || skillsList.contains(event.target)) return;
+    openSkillMenuId = null;
+    renderSkills();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && activeSkillDialog) {
+      event.stopImmediatePropagation();
+      closeSkillDialog(true);
+      return;
+    }
+    if (event.key === "Escape" && openSkillMenuId) {
+      const id = openSkillMenuId;
+      openSkillMenuId = null;
+      renderSkills();
+      const button = document.getElementById("skill-actions-" + id);
+      if (button) button.focus();
+    }
+  });
+
+  renderSkills();
 
   function getUserAgents(user) {
     return mockData.agentsCollection.filter(function (agent) { return agent.ownerId === user.id; });
@@ -581,6 +805,9 @@
     if (!userBackdrop.classList.contains("hidden")) closeUserDialog(false);
     if (openAgentMenuId) { openAgentMenuId = null; renderAgents(); }
     if (activeAgentDialog) closeAgentDialog(false);
+    if (openSkillMenuId) { openSkillMenuId = null; renderSkills(); }
+    if (activeSkillDialog) closeSkillDialog(false);
+    if (viewId === "habilidades") renderSkills();
 
     pages.forEach(function (page) {
       page.hidden = page.dataset.page !== viewId;
