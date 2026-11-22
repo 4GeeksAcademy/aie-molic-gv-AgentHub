@@ -1,8 +1,8 @@
 # TASKS-005 — Implementación futura: Contrataciones
 
 - **Derivadas de:** [`spec.md`](spec.md) y [`plan.md`](plan.md).
-- **Estado:** todas las tareas pendientes; no se ha implementado Contrataciones.
-- **Convención:** cada tarea incluye requisitos, archivos previstos, dependencias y criterio verificable. No marcar `[x]` sin evidencia real durante implementación futura.
+- **Estado:** implementación completada con validación manual parcial en Live Server; las tareas marcadas reflejan evidencia disponible. Permanecen pendientes las pruebas no confirmadas explícitamente y las validaciones cubiertas por tareas sin marcar.
+- **Convención:** cada tarea incluye requisitos, archivos previstos, dependencias y criterio verificable. No marcar `[x]` sin evidencia real.
 - **Archivos previstos en implementación futura:** `index.html`, `app.js`. Este documento SDD no autoriza tocar otras vistas ni fuentes.
 - **Secuencia:** las diez fases siguen el orden solicitado; tareas posteriores pueden depender de fases anteriores.
 
@@ -13,21 +13,21 @@
 - **Archivos:** `app.js`.
 - **Depende de:** aprobación de SPEC/PLAN.
 - **Criterio verificable:** una `contractsCollection` compartida contiene exactamente C-1001–C-1004 en orden canónico, con IDs estables, referencias de cliente/agente, fechas ISO, estado y líneas snapshot; no se duplica la colección en HTML ni se persiste.
-- [ ]
+- [x]
 
 ### T002 — Incorporar snapshots de las líneas comerciales
 - **Requisitos:** FR-005–006, FR-013; AC-004–005, AC-09, AC-11.
 - **Archivos:** `app.js`.
 - **Depende de:** T001.
 - **Criterio verificable:** líneas contienen skill ID/nombre snapshot, precio y subtotal numérico; sumas dan exactamente $500, $400, $450 y $450; cambios a catálogo de Skills no pueden recalcularlas.
-- [ ]
+- [x]
 
 ### T003 — Preservar snapshots de entidades relacionadas
 - **Requisitos:** FR-004, FR-013; AC-002, AC-08, AC-11.
 - **Archivos:** `app.js`.
 - **Depende de:** T001.
 - **Criterio verificable:** contratos guardan snapshots suficientes de empresa/contacto/agente; C-1004 refiere U-005/Valentina Cruz y A-001/Atlas; al faltar entidad, el contrato sigue renderizable con snapshot sin mutación del catálogo.
-- [ ]
+- [x]
 
 ## Fase 2 — Integración de vista y tabla
 
@@ -36,14 +36,14 @@
 - **Archivos:** `index.html`.
 - **Depende de:** aprobación SPEC/PLAN.
 - **Criterio verificable:** contenido interno del placeholder usa encabezado «Contrataciones», descripción neutral y región de vista sin duplicar shell; sidebar, IDs de routing, tema y destinos previos permanecen intactos.
-- [ ]
+- [x]
 
 ### T005 — Crear tabla semántica y región scrolleable
 - **Requisitos:** FR-004, FR-015–016; VIS-002, VIS-008; AC-003, AC-12.
 - **Archivos:** `index.html`.
 - **Depende de:** T004.
 - **Criterio verificable:** tabla con caption, thead/tbody, siete encabezados Cliente, Agente, Skills contratadas, Fecha de inicio, Fecha de fin, Importe pagado y Acciones; wrapper con nombre accesible y scroll horizontal local.
-- [ ]
+- [x]
 
 ### T006 — Renderizar cuatro filas desde el modelo
 - **Requisitos:** FR-003–007; VIS-003–005; AC-002, AC-004–006.
@@ -66,7 +66,7 @@
 - **Archivos:** `index.html`, `app.js`.
 - **Depende de:** T005–T006.
 - **Criterio verificable:** cada fila tiene botón nativo con nombre «Acciones para contrato C-…», `aria-expanded`, `aria-controls` y menú con una única acción «Ver detalle»; no CRUD ni acciones extra.
-- [ ]
+- [x]
 
 ### T009 — Gestionar estado, cierre y foco del menú
 - **Requisitos:** FR-009, FR-012, FR-016; AC-07, AC-10.
@@ -89,7 +89,7 @@
 - **Archivos:** `index.html`.
 - **Depende de:** T004–T005, T008.
 - **Criterio verificable:** una estructura modal/dialog nombrada con título, botón visible de cierre, backdrop y contenedor de contenido; sin datos de contrato hardcodeados ni controles de edición.
-- [ ]
+- [x]
 
 ### T012 — Renderizar datos completos del contrato seleccionado
 - **Requisitos:** FR-010, FR-013; VIS-003–005, VIS-007; AC-08–09, AC-11.
@@ -133,7 +133,7 @@
 - **Archivos:** `app.js` (validación del estado), sin cambio del Dashboard.
 - **Depende de:** T001–T003.
 - **Criterio verificable:** las sumas de contratos no alimentan ingresos, gráficos ni métricas mensuales del Dashboard; no se modifica la vista Dashboard ni sus cifras canónicas.
-- [ ]
+- [x]
 
 ## Fase 6 — Navegación, temas y estados
 
@@ -142,14 +142,14 @@
 - **Archivos:** `index.html`, `app.js`.
 - **Depende de:** T004, T008–T014.
 - **Criterio verificable:** navegación SPA entra/sale sin reload, activa el destino existente y limpia menú/modal sin alterar datos; otros destinos siguen operando.
-- [ ]
+- [x]
 
 ### T019 — Completar tema claro/oscuro y foco visible
 - **Requisitos:** FR-016–017; VIS-005–008; AC-12.
 - **Archivos:** `index.html`.
 - **Depende de:** T005–T014.
 - **Criterio verificable:** tabla, estados, chips, menú, backdrop/modal y controles tienen estilos legibles en claro/oscuro, contraste y focus-visible; colores no comunican estados por sí solos.
-- [ ]
+- [x]
 
 ### T020 — Respetar movimiento reducido y estado de overlays
 - **Requisitos:** FR-017; VIS-008; AC-12.
@@ -172,7 +172,7 @@
 - **Archivos:** `app.js` (validación).
 - **Depende de:** T016–T021.
 - **Criterio verificable:** contratos no mutan `usersCollection`, `agentsCollection`, `skillsCollection`; no se usa localStorage para contratos, no hay fetch/API y recargar restaura datos canónicos.
-- [ ]
+- [x]
 
 ## Fase 8 — Accesibilidad y responsive
 
@@ -204,9 +204,11 @@
 - **Archivos:** `index.html`, `app.js` (revisión).
 - **Depende de:** T001–T025.
 - **Criterio verificable:** revisión confirma vanilla JS, HTML semántico y Tailwind CDN existente; no framework, TS, backend, nueva dependencia/build, CSS propio/inline, persistencia de contratos, CRUD, filtro/búsqueda/paginación, cifras/sync no autorizadas de Stitch.
-- [ ]
+- [x]
 
 ## Fase 10 — Validación final
+
+**Evidencia de esta ejecución:** `node --check app.js`, `git diff --check` y comprobación Node del orden/IDs/sumas del modelo pasaron. El usuario confirmó revisión manual general en Live Server, sin detallar filas, diálogos, cierres, datos probados, mutaciones ni matriz de viewports/temas; no se atribuye a esa revisión cobertura específica no comunicada.
 
 ### T027 — Validar contratos canónicos y sumas
 - **Requisitos:** FR-003–007, FR-010; AC-02–09.

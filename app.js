@@ -25,6 +25,12 @@
       { id: "U-003", name: "Sofía Chen", email: "sofia.chen@orbitdata.example", company: "Orbit Data", plan: "Pro", status: "Activo", signupDate: "2025-08-19" },
       { id: "U-004", name: "Diego Herrera", email: "diego.herrera@verdeco.example", company: "Verde & Co.", plan: "Starter", status: "Pendiente", signupDate: "2026-01-10" },
       { id: "U-005", name: "Valentina Cruz", email: "valentina.cruz@northstar.example", company: "Northstar Labs", plan: "Enterprise", status: "Activo", signupDate: "2026-02-02" }
+    ],
+    contractsCollection: [
+      { id: "C-1001", clientUserId: "U-001", clientCompanySnapshot: "Northstar Labs", clientContactSnapshot: "Lucía Moreno", agentId: "A-001", agentNameSnapshot: "Atlas Researcher", startDate: "2026-10-01", endDate: "2026-11-01", status: "Activo", lines: [{ skillId: "S-001", skillNameSnapshot: "Web Research", unitPriceUsd: 320, subtotalUsd: 320 }, { skillId: "S-002", skillNameSnapshot: "Data Analysis", unitPriceUsd: 180, subtotalUsd: 180 }] },
+      { id: "C-1002", clientUserId: "U-002", clientCompanySnapshot: "BrightPath", clientContactSnapshot: "Mateo Ruiz", agentId: "A-002", agentNameSnapshot: "Nova Support", startDate: "2026-10-10", endDate: "2026-11-10", status: "Activo", lines: [{ skillId: "S-003", skillNameSnapshot: "Customer Support", unitPriceUsd: 240, subtotalUsd: 240 }, { skillId: "S-004", skillNameSnapshot: "Workflow Automation", unitPriceUsd: 160, subtotalUsd: 160 }] },
+      { id: "C-1003", clientUserId: "U-003", clientCompanySnapshot: "Orbit Data", clientContactSnapshot: "Sofía Chen", agentId: "A-003", agentNameSnapshot: "Orbit Analyst", startDate: "2026-09-15", endDate: "2026-10-15", status: "Finalizado", lines: [{ skillId: "S-002", skillNameSnapshot: "Data Analysis", unitPriceUsd: 300, subtotalUsd: 300 }, { skillId: "S-001", skillNameSnapshot: "Web Research", unitPriceUsd: 150, subtotalUsd: 150 }] },
+      { id: "C-1004", clientUserId: "U-005", clientCompanySnapshot: "Northstar Labs", clientContactSnapshot: "Valentina Cruz", agentId: "A-001", agentNameSnapshot: "Atlas Researcher", startDate: "2026-11-01", endDate: "2026-12-01", status: "Activo", lines: [{ skillId: "S-001", skillNameSnapshot: "Web Research", unitPriceUsd: 280, subtotalUsd: 280 }, { skillId: "S-002", skillNameSnapshot: "Data Analysis", unitPriceUsd: 170, subtotalUsd: 170 }] }
     ]
   };
 
@@ -57,6 +63,10 @@
   const agentConfigDialog = document.getElementById("agent-config-dialog");
   const agentDeleteBackdrop = document.getElementById("agent-delete-backdrop");
   const agentDeleteDialog = document.getElementById("agent-delete-dialog");
+  const contractsBody = document.getElementById("contracts-table-body");
+  const contractsEmpty = document.getElementById("contracts-empty-state");
+  const contractBackdrop = document.getElementById("contract-detail-backdrop");
+  const contractDialog = document.getElementById("contract-detail-dialog");
   let openUserMenuId = null;
   let pendingUserId = null;
   let dialogMode = "detail";
@@ -69,6 +79,147 @@
   let pendingSkillId = null;
   let activeSkillDialog = null;
   let skillDialogReturnFocus = null;
+  let openContractMenuId = null;
+  let contractDialogReturnFocus = null;
+  let contractBackdropPointerStarted = false;
+
+  function formatContractDate(isoDate) {
+    const parts = isoDate.split("-");
+    return parts[1] + "/" + parts[2] + "/" + parts[0];
+  }
+
+  function contractTotal(contract) {
+    return contract.lines.reduce(function (sum, line) { return sum + line.subtotalUsd; }, 0);
+  }
+
+  function contractUsd(amount) {
+    return "$" + amount.toLocaleString("en-US") + " USD";
+  }
+
+  function renderContracts() {
+    contractsBody.replaceChildren();
+    contractsEmpty.classList.toggle("hidden", mockData.contractsCollection.length !== 0);
+    mockData.contractsCollection.forEach(function (contract) {
+      const user = mockData.usersCollection.find(function (item) { return item.id === contract.clientUserId; });
+      const agent = mockData.agentsCollection.find(function (item) { return item.id === contract.agentId; });
+      const row = document.createElement("tr");
+      row.className = "hover:bg-slate-50 dark:hover:bg-slate-800/60";
+      const client = document.createElement("td");
+      client.className = "px-4 py-4";
+      const company = document.createElement("p");
+      company.className = "font-medium text-slate-900 dark:text-slate-100";
+      company.textContent = user ? user.company : contract.clientCompanySnapshot;
+      const contact = document.createElement("p");
+      contact.className = "mt-1 text-xs text-slate-500 dark:text-slate-400";
+      contact.textContent = user ? user.name : contract.clientContactSnapshot + " · referencia histórica";
+      client.append(company, contact);
+      const agentCell = document.createElement("td");
+      agentCell.className = "px-4 py-4";
+      const agentName = document.createElement("p");
+      agentName.className = "font-medium text-slate-900 dark:text-slate-100";
+      agentName.textContent = agent ? agent.name : contract.agentNameSnapshot + " · referencia histórica";
+      const agentId = document.createElement("p");
+      agentId.className = "mt-1 font-mono text-xs text-slate-500 dark:text-slate-400";
+      agentId.textContent = contract.agentId;
+      agentCell.append(agentName, agentId);
+      const skills = document.createElement("td");
+      skills.className = "px-4 py-4";
+      const chips = document.createElement("div");
+      chips.className = "flex max-w-xs flex-wrap gap-1.5";
+      contract.lines.forEach(function (line) {
+        const chip = document.createElement("span");
+        chip.className = "rounded-md border border-indigo-200 bg-indigo-50 px-2 py-1 text-xs text-indigo-800 dark:border-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-200";
+        chip.textContent = line.skillNameSnapshot;
+        chips.appendChild(chip);
+      });
+      skills.appendChild(chips);
+      const start = document.createElement("td"); start.className = "whitespace-nowrap px-4 py-4 font-mono text-xs tabular-nums text-slate-600 dark:text-slate-300"; start.textContent = formatContractDate(contract.startDate);
+      const end = document.createElement("td"); end.className = "whitespace-nowrap px-4 py-4 font-mono text-xs tabular-nums text-slate-600 dark:text-slate-300"; end.textContent = formatContractDate(contract.endDate);
+      const amount = document.createElement("td"); amount.className = "whitespace-nowrap px-4 py-4 text-right font-mono text-sm font-semibold tabular-nums text-slate-900 dark:text-slate-100"; amount.textContent = contractUsd(contractTotal(contract));
+      const actions = document.createElement("td"); actions.className = "px-4 py-3 text-right";
+      const button = document.createElement("button"); button.type = "button"; button.id = "contract-actions-" + contract.id;
+      button.className = "rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400";
+      button.textContent = "⋯"; button.setAttribute("aria-label", "Acciones para contrato " + contract.id); button.setAttribute("aria-haspopup", "true"); button.setAttribute("aria-expanded", String(openContractMenuId === contract.id)); button.setAttribute("aria-controls", "contract-menu-" + contract.id);
+      button.addEventListener("click", function () { toggleContractMenu(contract.id); }); actions.appendChild(button);
+      if (openContractMenuId === contract.id) {
+        const menu = document.createElement("div"); menu.id = "contract-menu-" + contract.id;
+        menu.className = "fixed z-[90] w-40 rounded-lg border border-slate-200 bg-white p-1 text-left shadow-xl dark:border-slate-700 dark:bg-slate-800"; menu.setAttribute("role", "group");
+        const buttonRect = button.getBoundingClientRect();
+        const menuWidth = 160;
+        const menuHeight = 44;
+        const left = Math.max(8, Math.min(buttonRect.right - menuWidth, window.innerWidth - menuWidth - 8));
+        const top = buttonRect.bottom + menuHeight + 4 > window.innerHeight ? Math.max(8, buttonRect.top - menuHeight - 4) : buttonRect.bottom + 4;
+        menu.style.left = left + "px"; menu.style.top = top + "px";
+        const detail = document.createElement("button"); detail.type = "button"; detail.className = "block w-full rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-200 dark:hover:bg-slate-700"; detail.textContent = "Ver detalle";
+        detail.addEventListener("click", function () { contractDialogReturnFocus = document.getElementById(button.id); openContractMenuId = null; renderContracts(); openContractDetail(contract.id); }); menu.appendChild(detail); actions.appendChild(menu);
+      }
+      row.append(client, agentCell, skills, start, end, amount, actions); contractsBody.appendChild(row);
+    });
+  }
+
+  function toggleContractMenu(contractId) {
+    openContractMenuId = openContractMenuId === contractId ? null : contractId;
+    renderContracts();
+    const button = document.getElementById("contract-actions-" + contractId);
+    if (button) button.focus();
+  }
+
+  function contractField(labelText, valueText) {
+    const wrapper = document.createElement("div");
+    const term = document.createElement("dt"); term.className = "text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400"; term.textContent = labelText;
+    const value = document.createElement("dd"); value.className = "mt-1 break-words text-sm text-slate-900 dark:text-slate-100"; value.textContent = valueText;
+    wrapper.append(term, value); return wrapper;
+  }
+
+  function openContractDetail(contractId) {
+    const contract = mockData.contractsCollection.find(function (item) { return item.id === contractId; });
+    if (!contract) return;
+    const user = mockData.usersCollection.find(function (item) { return item.id === contract.clientUserId; });
+    const agent = mockData.agentsCollection.find(function (item) { return item.id === contract.agentId; });
+    document.getElementById("contract-detail-title").textContent = (user ? user.company : contract.clientCompanySnapshot) + " · " + (agent ? agent.name : contract.agentNameSnapshot);
+    document.getElementById("contract-detail-id").textContent = contract.id;
+    const fields = document.getElementById("contract-detail-fields"); fields.replaceChildren();
+    [["Cliente / empresa", user ? user.company : contract.clientCompanySnapshot], ["Representante", user ? user.name : contract.clientContactSnapshot + " · referencia histórica"], ["Agente", (agent ? agent.name : contract.agentNameSnapshot) + " (" + contract.agentId + ")"], ["Fecha de inicio", formatContractDate(contract.startDate)], ["Fecha de fin", formatContractDate(contract.endDate)], ["Estado", contract.status], ["Total pagado", contractUsd(contractTotal(contract))]].forEach(function (field) { fields.appendChild(contractField(field[0], field[1])); });
+    const lines = document.getElementById("contract-detail-lines"); lines.replaceChildren();
+    contract.lines.forEach(function (line) {
+      const row = document.createElement("tr");
+      const name = document.createElement("th"); name.scope = "row"; name.className = "px-4 py-3 font-medium"; name.textContent = line.skillNameSnapshot + " (" + line.skillId + ")";
+      const price = document.createElement("td"); price.className = "whitespace-nowrap px-4 py-3 text-right font-mono tabular-nums"; price.textContent = contractUsd(line.unitPriceUsd);
+      const subtotal = document.createElement("td"); subtotal.className = "whitespace-nowrap px-4 py-3 text-right font-mono tabular-nums"; subtotal.textContent = contractUsd(line.subtotalUsd);
+      row.append(name, price, subtotal); lines.appendChild(row);
+    });
+    document.getElementById("contract-detail-total").textContent = contractUsd(contractTotal(contract));
+    contractBackdrop.classList.remove("hidden"); contractBackdrop.classList.add("flex"); document.getElementById("contract-detail-close").focus();
+  }
+
+  function closeContractDetail(restoreFocus) {
+    contractBackdrop.classList.add("hidden"); contractBackdrop.classList.remove("flex");
+    if (restoreFocus !== false && contractDialogReturnFocus && contractDialogReturnFocus.isConnected) contractDialogReturnFocus.focus();
+    else if (restoreFocus !== false) document.getElementById("contrataciones-title").focus();
+  }
+
+  renderContracts();
+  document.getElementById("contract-detail-close").addEventListener("click", function () { closeContractDetail(true); });
+  contractBackdrop.addEventListener("pointerdown", function (event) { contractBackdropPointerStarted = event.target === contractBackdrop; });
+  contractBackdrop.addEventListener("click", function (event) { const shouldClose = contractBackdropPointerStarted && event.target === contractBackdrop; contractBackdropPointerStarted = false; if (shouldClose) closeContractDetail(true); });
+  contractDialog.addEventListener("keydown", function (event) {
+    if (event.key !== "Tab") return;
+    const controls = Array.from(contractDialog.querySelectorAll("button:not([disabled])"));
+    if (!contractDialog.contains(document.activeElement)) { event.preventDefault(); controls[0].focus(); return; }
+    if (event.shiftKey && document.activeElement === controls[0]) { event.preventDefault(); controls[controls.length - 1].focus(); }
+    else if (!event.shiftKey && document.activeElement === controls[controls.length - 1]) { event.preventDefault(); controls[0].focus(); }
+  });
+  document.addEventListener("click", function (event) {
+    if (!openContractMenuId) return;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    if (path.includes(contractsBody) || contractsBody.contains(event.target)) return;
+    const id = openContractMenuId; openContractMenuId = null; renderContracts();
+    const button = document.getElementById("contract-actions-" + id); if (button) button.focus();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && !contractBackdrop.classList.contains("hidden")) { event.stopImmediatePropagation(); closeContractDetail(true); return; }
+    if (event.key === "Escape" && openContractMenuId) { const id = openContractMenuId; openContractMenuId = null; renderContracts(); const button = document.getElementById("contract-actions-" + id); if (button) button.focus(); }
+  });
 
   function getAgentsForSkill(skillId) {
     return mockData.agentsCollection.filter(function (agent) { return agent.skillIds.includes(skillId); });
@@ -807,7 +958,10 @@
     if (activeAgentDialog) closeAgentDialog(false);
     if (openSkillMenuId) { openSkillMenuId = null; renderSkills(); }
     if (activeSkillDialog) closeSkillDialog(false);
+    if (openContractMenuId) { openContractMenuId = null; renderContracts(); }
+    if (!contractBackdrop.classList.contains("hidden")) closeContractDetail(false);
     if (viewId === "habilidades") renderSkills();
+    if (viewId === "contrataciones") renderContracts();
 
     pages.forEach(function (page) {
       page.hidden = page.dataset.page !== viewId;
