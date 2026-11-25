@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>AgentHub Admin</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-primary-fixed": "#0f0069", "on-tertiary-fixed": "#25005a", "surface-bright": "#2c3a4c", "secondary-fixed-dim": "#b4c5ff", "surface-tint": "#c3c0ff", "secondary-fixed": "#dbe1ff", "on-secondary-fixed-variant": "#003ea8", "error-container": "#93000a", "primary-container": "#4f46e5", "on-primary": "#1d00a5", "on-surface-variant": "#c7c4d8", "error": "#ffb4ab", "tertiary-container": "#7531e6", "surface": "#051424", "on-surface": "#d4e4fa", "on-primary-fixed-variant": "#3323cc", "surface-container-highest": "#273647", "background": "#051424", "on-error": "#690005", "tertiary-fixed": "#eaddff", "surface-variant": "#273647", "on-background": "#d4e4fa", "secondary": "#b4c5ff", "on-tertiary": "#3f008e", "inverse-on-surface": "#233143", "secondary-container": "#0053db", "on-tertiary-container": "#e4d4ff", "on-secondary": "#002a78", "on-secondary-container": "#cdd7ff", "primary-fixed": "#e2dfff", "primary": "#c3c0ff", "inverse-surface": "#d4e4fa", "on-tertiary-fixed-variant": "#5a00c6", "surface-container": "#122131", "outline-variant": "#464555", "surface-container-lowest": "#010f1f", "surface-container-low": "#0d1c2d", "tertiary": "#d2bbff", "surface-dim": "#051424", "on-secondary-fixed": "#00174b", "inverse-primary": "#4d44e3", "tertiary-fixed-dim": "#d2bbff", "surface-container-high": "#1c2b3c", "on-error-container": "#ffdad6", "on-primary-container": "#dad7ff", "outline": "#918fa1", "primary-fixed-dim": "#c3c0ff" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xl": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "gutter": "1rem", "margin": "1.5rem", "space-md": "0.75rem", "gutter-mobile": "0.75rem", "space-lg": "1rem", "space-xs": "0.25rem" }, fontFamily: { "headline-lg": ["Geist"], "headline-md": ["Geist"], "headline-xl-mobile": ["Geist"], "body-md": ["Geist"], "label-md": ["JetBrains Mono"], "label-lg": ["JetBrains Mono"], "headline-sm": ["Geist"], "body-xs": ["Geist"], "body-sm": ["Geist"], "headline-xl": ["Geist"], "label-sm": ["JetBrains Mono"], "body-lg": ["Geist"] }, fontSize: { "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }], "headline-md": ["18px", { lineHeight: "26px", letterSpacing: "-0.015em", fontWeight: "600" }], "headline-xl-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0em", fontWeight: "500" }], "label-lg": ["13px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "headline-sm": ["15px", { lineHeight: "22px", letterSpacing: "-0.01em", fontWeight: "600" }], "body-xs": ["11px", { lineHeight: "16px", fontWeight: "400" }], "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }], "headline-xl": ["36px", { lineHeight: "44px", letterSpacing: "-0.025em", fontWeight: "600" }], "label-sm": ["10px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background text-on-surface font-body-md text-body-md antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.2)]"><div class="h-16 px-gutter-mobile flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Abrir menú de navegación" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface hover:bg-surface-container-high transition-colors" onclick="document.getElementById('mobile-drawer').classList.toggle('-translate-x-full');document.getElementById('drawer-backdrop').classList.toggle('hidden');" type="button"><span class="material-symbols-outlined text-[22px]">menu</span></button><img alt="AgentHub Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrAeMHbM_uUSRh2DEM0ztz07PpviWqhXccuGmytduwHRm7CYZBwxLI9M772XfSkQWrnnJ7oyboNU-TUXCgwr6UZcnMHV1iZf9X58PI16ZchgK1GIafh-zKn1XGs9NADnbjvBQ-gQd1lnQqzYSpApiShMaFNffzYTsO1oQfHBniXiDXXOu-FgC98cgJ-EDpJcLrgchRXVjwdgor_8Vf8WFAULcnlwerbObqKMVCmPCnFE"/><div class="flex flex-col"><span class="font-label-sm text-label-sm uppercase tracking-wider text-primary">AgentHub</span><span class="font-headline-sm text-headline-sm leading-tight text-on-surface">Agentes</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Alternar modo oscuro" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="document.documentElement.classList.toggle('dark')" type="button"><span class="material-symbols-outlined text-[20px]">dark_mode</span></button><div class="relative flex items-center justify-center pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Sfn5_8iLUADfzMxymHKMUeDP2X90gI5iuSUW0hNsO2Q13Fd9-xZAxjGQJsiIR15pA2oYfdOwh-U4yICEu9yhVl2vKB43YCIRd97o762eXx0sBLD5VT_UB_DQ5Di2LXeFiRUB6kFABfKsCUE3sMXhtbb1s3A4Kx4tc69HXKEhKgb3fnfRxVTDIy3KVAL_XcV57rbNS3sjdzAVq8gMm8jIea-8eJS6bhIDj-jSI2I"/><span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-surface-container-lowest"></span></div></div></div></header><div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity" id="drawer-backdrop" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');this.classList.add('hidden');"></div><aside class="fixed top-0 bottom-0 left-0 z-50 w-72 max-w-[85vw] bg-surface-container-low shadow-[0_8px_24px_-4px_rgba(0,0,0,0.65)] -translate-x-full transition-transform duration-200 ease-in-out flex flex-col pt-safe pb-safe" id="mobile-drawer"><div class="h-16 px-margin-mobile flex items-center justify-between bg-surface-container-lowest/60"><div class="flex items-center gap-space-sm"><img alt="AgentHub Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrAeMHbM_uUSRh2DEM0ztz07PpviWqhXccuGmytduwHRm7CYZBwxLI9M772XfSkQWrnnJ7oyboNU-TUXCgwr6UZcnMHV1iZf9X58PI16ZchgK1GIafh-zKn1XGs9NADnbjvBQ-gQd1lnQqzYSpApiShMaFNffzYTsO1oQfHBniXiDXXOu-FgC98cgJ-EDpJcLrgchRXVjwdgor_8Vf8WFAULcnlwerbObqKMVCmPCnFE"/><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AgentHub Console</span></div><button aria-label="Cerrar menú" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');document.getElementById('drawer-backdrop').classList.add('hidden');" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button></div><div class="px-margin-mobile py-space-sm bg-surface-container-high/40 flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Red Operacional Activa</span></div><span class="font-label-sm text-label-sm text-primary font-mono">v2.8-prod</span></div><nav class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-1" data-active-classes="bg-primary-container text-on-primary-container font-semibold"><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="panel" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="flex-1">1. Panel</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="usuarios" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span class="flex-1">2. Usuarios</span></a><a aria-current="page" class="flex items-center gap-space-md px-space-md h-11 rounded-lg transition-colors bg-primary-container text-on-primary-container font-semibold" data-path="agentes" href="#"><span class="material-symbols-outlined text-[20px]">smart_toy</span><span class="flex-1">3. Agentes</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="habilidades" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span class="flex-1">4. Habilidades</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="contrataciones" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="flex-1">5. Contrataciones</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="registro-de-errores" href="#"><span class="material-symbols-outlined text-[20px]">report_problem</span><span class="flex-1">6. Registro de errores</span></a></nav><div class="p-space-md bg-surface-container-lowest flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-9 h-9 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Sfn5_8iLUADfzMxymHKMUeDP2X90gI5iuSUW0hNsO2Q13Fd9-xZAxjGQJsiIR15pA2oYfdOwh-U4yICEu9yhVl2vKB43YCIRd97o762eXx0sBLD5VT_UB_DQ5Di2LXeFiRUB6kFABfKsCUE3sMXhtbb1s3A4Kx4tc69HXKEhKgb3fnfRxVTDIy3KVAL_XcV57rbNS3sjdzAVq8gMm8jIea-8eJS6bhIDj-jSI2I"/><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface leading-snug">Admin Root</span><span class="font-label-sm text-label-sm text-on-surface-variant">admin@agenthub.io</span></div></div><button aria-label="Cerrar sesión" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></aside><main class="flex flex-col relative w-full pt-16 pb-20 bg-background min-h-screen px-gutter-mobile"><div class="flex flex-col w-full pb-6 space-y-4">
+<!-- Cabecera de Página -->
+<div class="flex flex-col space-y-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary">Flota Desplegada</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-mono">4 Total / 2 Operativos</span>
+</div>
+<p class="font-headline-md text-headline-md text-on-surface">Supervisión de agentes autónomos</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Estado operativo, asignaciones empresariales y configuración de prompts de sistema.</p>
+</div>
+<!-- Métricas Rápidas en Cuadrícula Compacta -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-md rounded-lg bg-surface-container-low shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Tasa Operativa</span>
+<span class="font-headline-md text-headline-md text-on-surface">50.0%</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">vital_signs</span>
+</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Alerta Fallo</span>
+<span class="font-headline-md text-headline-md text-error">1 Crítico</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-error-container/20 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]">error</span>
+</div>
+</div>
+</div>
+<!-- Barra de Filtros y Búsqueda Rápida -->
+<div class="flex items-center justify-between gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-space-sm flex-1 bg-surface-container-lowest px-space-sm py-1.5 rounded">
+<span class="material-symbols-outlined text-outline text-[18px]">search</span>
+<input class="bg-transparent text-on-surface text-body-sm placeholder:text-outline focus:outline-none w-full font-body-sm" placeholder="Filtrar por agente, ID o empresa..." type="text"/>
+</div>
+<button class="h-8 px-space-sm bg-surface-container-high text-on-surface-variant rounded flex items-center justify-center gap-1 hover:text-on-surface active:scale-95 transition-all text-label-sm font-label-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+<span>Filtro</span>
+</button>
+</div>
+<!-- Lista de Agentes Estructurados -->
+<div class="flex flex-col space-y-space-md">
+<!-- Tarjeta 1: Atlas Researcher -->
+<article class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col space-y-space-sm transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">explore</span>
+<span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">Atlas Researcher</h2>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">U-001</span>
+</div>
+<span class="font-body-xs text-body-xs text-on-surface-variant truncate">Northstar Labs • Lucía Moreno</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Activo
+          </span>
+<div class="relative">
+<button aria-label="Opciones de Atlas Researcher" class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="toggleDropdown('menu-1')" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+<div class="hidden absolute right-0 top-9 z-20 w-36 py-1 bg-surface-container-highest rounded-lg shadow-xl flex flex-col" id="menu-1">
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-container-bright" onclick="openConfigModal('Atlas Researcher', 'Lucía Moreno (U-001)', 'Activo', 'menu-1')" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">tune</span>
+                Configurar
+              </button>
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container/20" onclick="openDeleteDialog('Atlas Researcher', 'menu-1')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+                Eliminar
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Acordeón Habilidades -->
+<div class="rounded-lg bg-surface-container-lowest/70 overflow-hidden">
+<button aria-expanded="false" class="w-full px-space-md py-2 flex items-center justify-between text-left hover:bg-surface-container-high/40 transition-colors" id="btn-acc-1" onclick="toggleAccordion('acc-1', 'arrow-1')" type="button">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mr-1">Habilidades:</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Web Research</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Data Analysis</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px] transition-transform duration-200" id="arrow-1">expand_more</span>
+</button>
+<div class="hidden px-space-md pb-space-sm pt-1 space-y-2 bg-surface-container-lowest" id="acc-1">
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Motor Neuronal</span>
+<p class="font-body-xs text-body-xs text-on-surface">GPT-4o Enterprise Edition • Latencia p99: 412ms</p>
+</div>
+<div class="flex items-center justify-between text-body-xs font-body-xs text-on-surface-variant pt-1">
+<span>Tokens hora: <strong class="text-on-surface font-mono">142,390</strong></span>
+<span>Éxito de scraping: <strong class="text-emerald-400 font-mono">99.4%</strong></span>
+</div>
+</div>
+</div>
+</article>
+<!-- Tarjeta 2: Nova Support -->
+<article class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col space-y-space-sm transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-10 h-10 rounded-lg bg-secondary-container/30 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">forum</span>
+<span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">Nova Support</h2>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">U-002</span>
+</div>
+<span class="font-body-xs text-body-xs text-on-surface-variant truncate">BrightPath • Mateo Ruiz</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Activo
+          </span>
+<div class="relative">
+<button aria-label="Opciones de Nova Support" class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="toggleDropdown('menu-2')" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+<div class="hidden absolute right-0 top-9 z-20 w-36 py-1 bg-surface-container-highest rounded-lg shadow-xl flex flex-col" id="menu-2">
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-container-bright" onclick="openConfigModal('Nova Support', 'Mateo Ruiz (U-002)', 'Activo', 'menu-2')" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">tune</span>
+                Configurar
+              </button>
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container/20" onclick="openDeleteDialog('Nova Support', 'menu-2')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+                Eliminar
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Acordeón Habilidades -->
+<div class="rounded-lg bg-surface-container-lowest/70 overflow-hidden">
+<button aria-expanded="false" class="w-full px-space-md py-2 flex items-center justify-between text-left hover:bg-surface-container-high/40 transition-colors" id="btn-acc-2" onclick="toggleAccordion('acc-2', 'arrow-2')" type="button">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mr-1">Habilidades:</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Customer Support</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Workflow Automation</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px] transition-transform duration-200" id="arrow-2">expand_more</span>
+</button>
+<div class="hidden px-space-md pb-space-sm pt-1 space-y-2 bg-surface-container-lowest" id="acc-2">
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Protocolo de Asistencia</span>
+<p class="font-body-xs text-body-xs text-on-surface">Zendesk Webhook Integration • SLA Respuesta: &lt; 2.4s</p>
+</div>
+<div class="flex items-center justify-between text-body-xs font-body-xs text-on-surface-variant pt-1">
+<span>Resolución 1er contacto: <strong class="text-emerald-400 font-mono">88.2%</strong></span>
+<span>Escalado humano: <strong class="text-on-surface font-mono">11.8%</strong></span>
+</div>
+</div>
+</div>
+</article>
+<!-- Tarjeta 3: Orbit Analyst (Desplegado por defecto aria-expanded='true' revelando capacidades y estado) -->
+<article class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col space-y-space-sm relative overflow-hidden transition-all hover:bg-surface-container">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-10 h-10 rounded-lg bg-error-container/30 flex items-center justify-center text-error flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">analytics</span>
+<span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-error animate-pulse"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">Orbit Analyst</h2>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">U-003</span>
+</div>
+<span class="font-body-xs text-body-xs text-on-surface-variant truncate">Orbit Data • Sofía Chen</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+            Fallando
+          </span>
+<div class="relative">
+<button aria-label="Opciones de Orbit Analyst" class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="toggleDropdown('menu-3')" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+<div class="hidden absolute right-0 top-9 z-20 w-36 py-1 bg-surface-container-highest rounded-lg shadow-xl flex flex-col" id="menu-3">
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-container-bright" onclick="openConfigModal('Orbit Analyst', 'Sofía Chen (U-003)', 'Fallando', 'menu-3')" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">tune</span>
+                Configurar
+              </button>
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container/20" onclick="openDeleteDialog('Orbit Analyst', 'menu-3')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+                Eliminar
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Acordeón Habilidades: DESPLEGADO CANÓNICO -->
+<div class="rounded-lg bg-surface-container-lowest overflow-hidden">
+<button aria-expanded="true" class="w-full px-space-md py-2 flex items-center justify-between text-left bg-surface-container-high/60 transition-colors" id="btn-acc-3" onclick="toggleAccordion('acc-3', 'arrow-3')" type="button">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mr-1">Habilidades:</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Data Analysis</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Web Research</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px] rotate-180 transition-transform duration-200" id="arrow-3">expand_more</span>
+</button>
+<div class="px-space-md py-space-sm space-y-space-sm bg-surface-container-lowest" id="acc-3">
+<div class="p-space-sm rounded bg-error-container/20 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-error text-[18px] mt-0.5">report_problem</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-error font-medium">Estado del Modelo: Excepción de Contexto</span>
+<p class="font-body-xs text-body-xs text-on-surface-variant">Límite de tokens superado en llamada recursiva: <code class="font-mono text-error">ERR_CONTEXT_WINDOW_OVERFLOW (128k)</code></p>
+</div>
+</div>
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Capacidades Declaradas</span>
+<div class="grid grid-cols-2 gap-space-xs font-body-xs text-body-xs">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span>
+<span>Pandas / Parquet Parser</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span>
+<span>SQL Synthesizer</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-error">cancel</span>
+<span>Crawler Headless (Inactivo)</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span>
+<span>Visualización Seaborn/SVG</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 font-label-sm text-label-sm text-on-surface-variant border-none">
+<span>Último checkpoint: <span class="font-mono text-on-surface">Hace 4m</span></span>
+<button class="text-primary hover:underline font-label-sm text-label-sm" type="button">Reintentar pipeline</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Tarjeta 4: Verde Workflow -->
+<article class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col space-y-space-sm opacity-90 transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">account_tree</span>
+<span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-outline"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">Verde Workflow</h2>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary font-mono">U-004</span>
+</div>
+<span class="font-body-xs text-body-xs text-on-surface-variant truncate">Verde &amp; Co. • Diego Herrera</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+            Inactivo
+          </span>
+<div class="relative">
+<button aria-label="Opciones de Verde Workflow" class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="toggleDropdown('menu-4')" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+<div class="hidden absolute right-0 top-9 z-20 w-36 py-1 bg-surface-container-highest rounded-lg shadow-xl flex flex-col" id="menu-4">
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-container-bright" onclick="openConfigModal('Verde Workflow', 'Diego Herrera (U-004)', 'Inactivo', 'menu-4')" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">tune</span>
+                Configurar
+              </button>
+<button class="flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container/20" onclick="openDeleteDialog('Verde Workflow', 'menu-4')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+                Eliminar
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Acordeón Habilidades -->
+<div class="rounded-lg bg-surface-container-lowest/70 overflow-hidden">
+<button aria-expanded="false" class="w-full px-space-md py-2 flex items-center justify-between text-left hover:bg-surface-container-high/40 transition-colors" id="btn-acc-4" onclick="toggleAccordion('acc-4', 'arrow-4')" type="button">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mr-1">Habilidades:</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Workflow Automation</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm">Customer Support</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px] transition-transform duration-200" id="arrow-4">expand_more</span>
+</button>
+<div class="hidden px-space-md pb-space-sm pt-1 space-y-2 bg-surface-container-lowest" id="acc-4">
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Asignador de Tareas</span>
+<p class="font-body-xs text-body-xs text-on-surface">Instancia en hibernación por bajo consumo presupuestario.</p>
+</div>
+<div class="flex items-center justify-between text-body-xs font-body-xs text-on-surface-variant pt-1">
+<span>Última activación: <span class="text-on-surface font-mono">14 de Octubre</span></span>
+<button class="text-primary hover:underline font-label-sm text-label-sm" type="button">Despertar nodo</button>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Toast Notificación de Éxito Accesible -->
+<div aria-live="polite" class="fixed bottom-20 left-4 right-4 z-50 transform translate-y-32 opacity-0 transition-all duration-300 pointer-events-none" id="toast-success" role="status">
+<div class="max-w-md mx-auto p-space-md rounded-xl bg-surface-bright text-on-surface shadow-2xl flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">Configuración guardada</span>
+<span class="font-body-xs text-body-xs text-on-surface-variant" id="toast-message">Los parámetros locales han sido actualizados con éxito.</span>
+</div>
+<button aria-label="Cerrar aviso" class="p-1 text-on-surface-variant hover:text-on-surface" onclick="hideToast()" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Modal 'Configurar Agente' para Atlas Researcher -->
+<div aria-labelledby="modal-title" aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center px-gutter-mobile bg-black/75 backdrop-blur-sm hidden" id="modal-config" role="dialog">
+<div class="w-full max-w-lg bg-surface-container-low rounded-xl shadow-2xl overflow-hidden flex flex-col my-auto max-h-[777px]">
+<!-- Encabezado Modal -->
+<div class="p-space-md bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface" id="modal-title">Configurar Agente</h2>
+</div>
+<button aria-label="Cerrar modal" class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="closeConfigModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Contenido Modal con Scroll -->
+<div class="p-space-md overflow-y-auto space-y-space-md">
+<!-- Campos Informativos -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col p-2.5 rounded bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Nombre del Agente</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium truncate" id="cfg-agent-name">Atlas Researcher</span>
+</div>
+<div class="flex flex-col p-2.5 rounded bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Estado Actual</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400" id="cfg-status-dot"></span>
+<span class="font-label-sm text-label-sm text-emerald-400 font-mono" id="cfg-agent-status">Activo</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col p-2.5 rounded bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Propietario / Unidad</span>
+<span class="font-body-sm text-body-sm text-on-surface font-mono" id="cfg-agent-owner">Lucía Moreno (U-001)</span>
+</div>
+<!-- Área de Texto Editable: Prompt del Sistema -->
+<div class="flex flex-col space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider" for="system-prompt-input">Prompt del Sistema</label>
+<span class="font-label-sm text-label-sm text-primary font-mono">3 Frases Canónicas</span>
+</div>
+<textarea class="w-full p-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all resize-none shadow-inner" id="system-prompt-input" placeholder="Escribe el prompt rector..." rows="4">Eres Atlas Researcher, agente autónomo especializado en recopilación y síntesis estructurada de datos web para Northstar Labs. Ejecuta validación rigurosa de fuentes primarias y genera informes ejecutivos concisos con citas verificables.</textarea>
+<div class="flex items-center gap-1.5 pt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px] text-outline">info</span>
+<p class="font-body-xs text-body-xs">Cambios de demostración; no se guardan en un servidor</p>
+</div>
+</div>
+</div>
+<!-- Pie del Modal -->
+<div class="p-space-md bg-surface-container-lowest flex items-center justify-end gap-space-sm">
+<button class="px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-body-sm text-body-sm" onclick="closeConfigModal()" type="button">
+          Cancelar
+        </button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary font-body-sm text-body-sm font-semibold hover:opacity-95 active:scale-95 transition-all shadow-md flex items-center gap-1.5" onclick="saveAgentConfig()" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+          Guardar cambios
+        </button>
+</div>
+</div>
+</div>
+<!-- Diálogo de Confirmación de Eliminación Accesible -->
+<div aria-describedby="delete-dialog-desc" aria-labelledby="delete-dialog-title" aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center px-gutter-mobile bg-black/80 backdrop-blur-sm hidden" id="modal-delete" role="alertdialog">
+<div class="w-full max-w-sm bg-surface-container-low rounded-xl shadow-2xl p-space-md flex flex-col space-y-space-md my-auto">
+<div class="w-12 h-12 rounded-full bg-error-container/30 text-error flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-[28px]">warning</span>
+</div>
+<div class="flex flex-col text-center space-y-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="delete-dialog-title">¿Eliminar Agente?</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="delete-dialog-desc">
+          Estás a punto de desaprovisionar <strong class="text-on-surface" id="delete-target-name">Atlas Researcher</strong>. Se revocarán todas sus credenciales activas y claves de API.
+        </p>
+</div>
+<div class="p-2.5 rounded bg-surface-container-lowest text-center">
+<span class="font-label-sm text-label-sm text-outline font-mono">Acción de demostración segura</span>
+</div>
+<div class="flex items-center gap-space-sm pt-1">
+<button class="flex-1 py-2 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors" onclick="closeDeleteDialog()" type="button">
+          Cancelar
+        </button>
+<button class="flex-1 py-2 rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm font-semibold hover:opacity-90 active:scale-95 transition-all" onclick="confirmDeleteAgent()" type="button">
+          Eliminar
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Control de Acordeón accesible
+  function toggleAccordion(contentId, arrowId) {
+    const content = document.getElementById(contentId);
+    const arrow = document.getElementById(arrowId);
+    const btn = document.getElementById('btn-' + contentId);
+    const isHidden = content.classList.contains('hidden');
+
+    if (isHidden) {
+      content.classList.remove('hidden');
+      arrow.classList.add('rotate-180');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    } else {
+      content.classList.add('hidden');
+      arrow.classList.remove('rotate-180');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  // Desplegable de Opciones
+  function toggleDropdown(menuId) {
+    const menu = document.getElementById(menuId);
+    const allMenus = document.querySelectorAll('[id^="menu-"]');
+    allMenus.forEach(m => {
+      if (m.id !== menuId) m.classList.add('hidden');
+    });
+    menu.classList.toggle('hidden');
+  }
+
+  // Cerrar menús al hacer click afuera
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('button[onclick*="toggleDropdown"]') && !e.target.closest('[id^="menu-"]')) {
+      document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden'));
+    }
+  });
+
+  // Modal de Configurar
+  function openConfigModal(name, owner, status, fromMenuId) {
+    if (fromMenuId) document.getElementById(fromMenuId).classList.add('hidden');
+    document.getElementById('cfg-agent-name').textContent = name;
+    document.getElementById('cfg-agent-owner').textContent = owner;
+    document.getElementById('cfg-agent-status').textContent = status;
+    
+    const dot = document.getElementById('cfg-status-dot');
+    const statusText = document.getElementById('cfg-agent-status');
+    if (status === 'Activo') {
+      dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+      statusText.className = 'font-label-sm text-label-sm text-emerald-400 font-mono';
+    } else if (status === 'Fallando') {
+      dot.className = 'w-2 h-2 rounded-full bg-error';
+      statusText.className = 'font-label-sm text-label-sm text-error font-mono';
+    } else {
+      dot.className = 'w-2 h-2 rounded-full bg-outline';
+      statusText.className = 'font-label-sm text-label-sm text-outline font-mono';
+    }
+
+    document.getElementById('modal-config').classList.remove('hidden');
+  }
+
+  function closeConfigModal() {
+    document.getElementById('modal-config').classList.add('hidden');
+  }
+
+  function saveAgentConfig() {
+    closeConfigModal();
+    showToast('Parámetros y prompt actualizados correctamente.');
+  }
+
+  // Diálogo de Eliminación
+  let targetToDelete = '';
+  function openDeleteDialog(agentName, fromMenuId) {
+    if (fromMenuId) document.getElementById(fromMenuId).classList.add('hidden');
+    targetToDelete = agentName;
+    document.getElementById('delete-target-name').textContent = agentName;
+    document.getElementById('modal-delete').classList.remove('hidden');
+  }
+
+  function closeDeleteDialog() {
+    document.getElementById('modal-delete').classList.add('hidden');
+  }
+
+  function confirmDeleteAgent() {
+    closeDeleteDialog();
+    showToast('El agente ' + targetToDelete + ' ha sido marcado como inactivo.');
+  }
+
+  // Toast Accesible
+  let toastTimer;
+  function showToast(message) {
+    const toast = document.getElementById('toast-success');
+    const msg = document.getElementById('toast-message');
+    msg.textContent = message;
+    toast.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      hideToast();
+    }, 4000);
+  }
+
+  function hideToast() {
+    const toast = document.getElementById('toast-success');
+    toast.classList.remove('translate-y-0', 'opacity-100');
+    toast.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.3)]" data-active-classes="text-primary font-semibold"><div class="flex items-center justify-between h-16 px-space-xs"><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="panel" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-sm text-label-sm tracking-tight">Panel</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="usuarios" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span class="font-label-sm text-label-sm tracking-tight">Usuarios</span></a><a aria-current="page" class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] transition-colors text-primary font-semibold" data-path="agentes" href="#"><span class="material-symbols-outlined text-[20px]">smart_toy</span><span class="font-label-sm text-label-sm tracking-tight">Agentes</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="habilidades" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span class="font-label-sm text-label-sm tracking-tight">Habilidades</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="contrataciones" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-sm text-label-sm tracking-tight">Contratos</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="registro-de-errores" href="#"><span class="material-symbols-outlined text-[20px]">warning</span><span class="font-label-sm text-label-sm tracking-tight">Errores</span></a></div></nav></body></html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>AgentHub Admin</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-primary-fixed": "#0f0069", "on-tertiary-fixed": "#25005a", "surface-bright": "#2c3a4c", "secondary-fixed-dim": "#b4c5ff", "surface-tint": "#c3c0ff", "secondary-fixed": "#dbe1ff", "on-secondary-fixed-variant": "#003ea8", "error-container": "#93000a", "primary-container": "#4f46e5", "on-primary": "#1d00a5", "on-surface-variant": "#c7c4d8", "error": "#ffb4ab", "tertiary-container": "#7531e6", "surface": "#051424", "on-surface": "#d4e4fa", "on-primary-fixed-variant": "#3323cc", "surface-container-highest": "#273647", "background": "#051424", "on-error": "#690005", "tertiary-fixed": "#eaddff", "surface-variant": "#273647", "on-background": "#d4e4fa", "secondary": "#b4c5ff", "on-tertiary": "#3f008e", "inverse-on-surface": "#233143", "secondary-container": "#0053db", "on-tertiary-container": "#e4d4ff", "on-secondary": "#002a78", "on-secondary-container": "#cdd7ff", "primary-fixed": "#e2dfff", "primary": "#c3c0ff", "inverse-surface": "#d4e4fa", "on-tertiary-fixed-variant": "#5a00c6", "surface-container": "#122131", "outline-variant": "#464555", "surface-container-lowest": "#010f1f", "surface-container-low": "#0d1c2d", "tertiary": "#d2bbff", "surface-dim": "#051424", "on-secondary-fixed": "#00174b", "inverse-primary": "#4d44e3", "tertiary-fixed-dim": "#d2bbff", "surface-container-high": "#1c2b3c", "on-error-container": "#ffdad6", "on-primary-container": "#dad7ff", "outline": "#918fa1", "primary-fixed-dim": "#c3c0ff" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xl": "1.5rem", "space-sm": "0.5rem", "margin-mobile": "1rem", "gutter": "1rem", "margin": "1.5rem", "space-md": "0.75rem", "gutter-mobile": "0.75rem", "space-lg": "1rem", "space-xs": "0.25rem" }, fontFamily: { "headline-lg": ["Geist"], "headline-md": ["Geist"], "headline-xl-mobile": ["Geist"], "body-md": ["Geist"], "label-md": ["JetBrains Mono"], "label-lg": ["JetBrains Mono"], "headline-sm": ["Geist"], "body-xs": ["Geist"], "body-sm": ["Geist"], "headline-xl": ["Geist"], "label-sm": ["JetBrains Mono"], "body-lg": ["Geist"] }, fontSize: { "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }], "headline-md": ["18px", { lineHeight: "26px", letterSpacing: "-0.015em", fontWeight: "600" }], "headline-xl-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "600" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0em", fontWeight: "500" }], "label-lg": ["13px", { lineHeight: "18px", letterSpacing: "-0.01em", fontWeight: "500" }], "headline-sm": ["15px", { lineHeight: "22px", letterSpacing: "-0.01em", fontWeight: "600" }], "body-xs": ["11px", { lineHeight: "16px", fontWeight: "400" }], "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }], "headline-xl": ["36px", { lineHeight: "44px", letterSpacing: "-0.025em", fontWeight: "600" }], "label-sm": ["10px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background text-on-surface font-body-md text-body-md antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.2)]"><div class="h-16 px-gutter-mobile flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Abrir menú de navegación" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface hover:bg-surface-container-high transition-colors" onclick="document.getElementById('mobile-drawer').classList.toggle('-translate-x-full');document.getElementById('drawer-backdrop').classList.toggle('hidden');" type="button"><span class="material-symbols-outlined text-[22px]">menu</span></button><img alt="AgentHub Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrAeMHbM_uUSRh2DEM0ztz07PpviWqhXccuGmytduwHRm7CYZBwxLI9M772XfSkQWrnnJ7oyboNU-TUXCgwr6UZcnMHV1iZf9X58PI16ZchgK1GIafh-zKn1XGs9NADnbjvBQ-gQd1lnQqzYSpApiShMaFNffzYTsO1oQfHBniXiDXXOu-FgC98cgJ-EDpJcLrgchRXVjwdgor_8Vf8WFAULcnlwerbObqKMVCmPCnFE"/><div class="flex flex-col"><span class="font-label-sm text-label-sm uppercase tracking-wider text-primary">AgentHub</span><span class="font-headline-sm text-headline-sm leading-tight text-on-surface">Habilidades</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Alternar modo oscuro" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="document.documentElement.classList.toggle('dark')" type="button"><span class="material-symbols-outlined text-[20px]">dark_mode</span></button><div class="relative flex items-center justify-center pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Sfn5_8iLUADfzMxymHKMUeDP2X90gI5iuSUW0hNsO2Q13Fd9-xZAxjGQJsiIR15pA2oYfdOwh-U4yICEu9yhVl2vKB43YCIRd97o762eXx0sBLD5VT_UB_DQ5Di2LXeFiRUB6kFABfKsCUE3sMXhtbb1s3A4Kx4tc69HXKEhKgb3fnfRxVTDIy3KVAL_XcV57rbNS3sjdzAVq8gMm8jIea-8eJS6bhIDj-jSI2I"/><span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-surface-container-lowest"></span></div></div></div></header><div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity" id="drawer-backdrop" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');this.classList.add('hidden');"></div><aside class="fixed top-0 bottom-0 left-0 z-50 w-72 max-w-[85vw] bg-surface-container-low shadow-[0_8px_24px_-4px_rgba(0,0,0,0.65)] -translate-x-full transition-transform duration-200 ease-in-out flex flex-col pt-safe pb-safe" id="mobile-drawer"><div class="h-16 px-margin-mobile flex items-center justify-between bg-surface-container-lowest/60"><div class="flex items-center gap-space-sm"><img alt="AgentHub Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrAeMHbM_uUSRh2DEM0ztz07PpviWqhXccuGmytduwHRm7CYZBwxLI9M772XfSkQWrnnJ7oyboNU-TUXCgwr6UZcnMHV1iZf9X58PI16ZchgK1GIafh-zKn1XGs9NADnbjvBQ-gQd1lnQqzYSpApiShMaFNffzYTsO1oQfHBniXiDXXOu-FgC98cgJ-EDpJcLrgchRXVjwdgor_8Vf8WFAULcnlwerbObqKMVCmPCnFE"/><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">AgentHub Console</span></div><button aria-label="Cerrar menú" class="w-11 h-11 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('mobile-drawer').classList.add('-translate-x-full');document.getElementById('drawer-backdrop').classList.add('hidden');" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button></div><div class="px-margin-mobile py-space-sm bg-surface-container-high/40 flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Red Operacional Activa</span></div><span class="font-label-sm text-label-sm text-primary font-mono">v2.8-prod</span></div><nav class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-1" data-active-classes="bg-primary-container text-on-primary-container font-semibold"><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="panel" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="flex-1">1. Panel</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="usuarios" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span class="flex-1">2. Usuarios</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="agentes" href="#"><span class="material-symbols-outlined text-[20px]">smart_toy</span><span class="flex-1">3. Agentes</span></a><a aria-current="page" class="flex items-center gap-space-md px-space-md h-11 rounded-lg transition-colors bg-primary-container text-on-primary-container font-semibold" data-path="habilidades" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span class="flex-1">4. Habilidades</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="contrataciones" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="flex-1">5. Contrataciones</span></a><a class="flex items-center gap-space-md px-space-md h-11 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" data-path="registro-de-errores" href="#"><span class="material-symbols-outlined text-[20px]">report_problem</span><span class="flex-1">6. Registro de errores</span></a></nav><div class="p-space-md bg-surface-container-lowest flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-9 h-9 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Sfn5_8iLUADfzMxymHKMUeDP2X90gI5iuSUW0hNsO2Q13Fd9-xZAxjGQJsiIR15pA2oYfdOwh-U4yICEu9yhVl2vKB43YCIRd97o762eXx0sBLD5VT_UB_DQ5Di2LXeFiRUB6kFABfKsCUE3sMXhtbb1s3A4Kx4tc69HXKEhKgb3fnfRxVTDIy3KVAL_XcV57rbNS3sjdzAVq8gMm8jIea-8eJS6bhIDj-jSI2I"/><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface leading-snug">Admin Root</span><span class="font-label-sm text-label-sm text-on-surface-variant">admin@agenthub.io</span></div></div><button aria-label="Cerrar sesión" class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:text-error transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></aside><main class="flex flex-col relative w-full pt-16 pb-20 bg-background min-h-screen px-gutter-mobile"><div class="flex flex-col w-full pb-6 space-y-space-md">
+<!-- Header Contextual -->
+<div class="flex flex-col space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Habilidades</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm font-semibold">4 Activas</span>
+</div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary-container font-body-sm text-body-sm shadow-sm active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Crear</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Catálogo de capacidades modulares asignables a agentes</p>
+</div>
+<!-- Panel Educativo Informativo Compacto -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high p-space-md shadow-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-tertiary-container/30 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">lightbulb</span>
+</div>
+<div class="flex flex-col space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">¿Qué es una habilidad?</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Modular Core</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Una habilidad es una capacidad modular que un agente puede utilizar (por ejemplo, investigación o analítica). Una misma habilidad puede asociarse a múltiples agentes y se tarifa de forma independiente en los contratos.
+        </p>
+</div>
+</div>
+</div>
+<!-- Barra de Filtros Rápida -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1">
+<button class="px-3 py-1 rounded-lg bg-surface-container-highest text-primary font-label-md text-label-md shrink-0 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">apps</span> Todas (4)
+    </button>
+<button class="px-3 py-1 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md shrink-0">Investigación</button>
+<button class="px-3 py-1 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md shrink-0">Analítica</button>
+<button class="px-3 py-1 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md shrink-0">Atención</button>
+<button class="px-3 py-1 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md shrink-0">Automatización</button>
+</div>
+<!-- Lista de las 4 Habilidades Canónicas -->
+<div class="flex flex-col space-y-space-sm">
+<!-- Card 1: Web Research -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-secondary-container/30 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">travel_explore</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Web Research</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-secondary font-label-sm text-label-sm">Investigación</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Busca, compara y sintetiza información web.</p>
+</div>
+</div>
+<button aria-label="Opciones" class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 active:bg-surface-bright" onclick="openSkillModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<div class="mt-3 pt-2.5 bg-surface-container-low rounded-lg p-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">smart_toy</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Atlas Researcher, Orbit Analyst</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-primary px-2 py-0.5 rounded bg-primary-container/20">2 agentes</span>
+</div>
+</div>
+<!-- Card 2: Data Analysis -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-tertiary-container/30 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Data Analysis</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-tertiary font-label-sm text-label-sm">Analítica</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Analiza conjuntos de datos y resume hallazgos.</p>
+</div>
+</div>
+<button aria-label="Opciones" class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 active:bg-surface-bright" onclick="toggleContext('menu-2')" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<!-- Menú Contextual Desplegable para Data Analysis -->
+<div class="hidden absolute right-3 top-12 z-20 w-40 rounded-lg bg-surface-container-highest shadow-xl p-1" id="menu-2">
+<button class="w-full flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-bright rounded" onclick="openSkillModal()" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Ver detalle</span>
+</button>
+<button class="w-full flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container/30 rounded" onclick="triggerDemoDelete('Data Analysis')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+<span>Eliminar</span>
+</button>
+</div>
+<div class="mt-3 pt-2.5 bg-surface-container-low rounded-lg p-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-tertiary">smart_toy</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Atlas Researcher, Orbit Analyst</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-tertiary px-2 py-0.5 rounded bg-tertiary-container/20">2 agentes</span>
+</div>
+</div>
+<!-- Card 3: Customer Support -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-secondary-container/30 text-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Customer Support</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-secondary-fixed font-label-sm text-label-sm">Atención</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Clasifica consultas y redacta respuestas de soporte.</p>
+</div>
+</div>
+<button aria-label="Opciones" class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 active:bg-surface-bright" onclick="toggleContext('menu-3')" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<!-- Menú Contextual Desplegable para Customer Support -->
+<div class="hidden absolute right-3 top-12 z-20 w-40 rounded-lg bg-surface-container-highest shadow-xl p-1" id="menu-3">
+<button class="w-full flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-bright rounded" onclick="openSkillModal()" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Ver detalle</span>
+</button>
+<button class="w-full flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container/30 rounded" onclick="triggerDemoDelete('Customer Support')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+<span>Eliminar</span>
+</button>
+</div>
+<div class="mt-3 pt-2.5 bg-surface-container-low rounded-lg p-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">smart_toy</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Nova Support, Verde Workflow</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-primary px-2 py-0.5 rounded bg-primary-container/20">2 agentes</span>
+</div>
+</div>
+<!-- Card 4: Workflow Automation -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-primary-container/30 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">account_tree</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Workflow Automation</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm">Automatización</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Coordina pasos repetibles y tareas entre herramientas.</p>
+</div>
+</div>
+<button aria-label="Opciones" class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 active:bg-surface-bright" onclick="toggleContext('menu-4')" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<!-- Menú Contextual Desplegable para Workflow Automation -->
+<div class="hidden absolute right-3 top-12 z-20 w-40 rounded-lg bg-surface-container-highest shadow-xl p-1" id="menu-4">
+<button class="w-full flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-on-surface hover:bg-surface-bright rounded" onclick="openSkillModal()" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Ver detalle</span>
+</button>
+<button class="w-full flex items-center gap-2 px-3 py-2 text-left font-body-sm text-body-sm text-error hover:bg-error-container/30 rounded" onclick="triggerDemoDelete('Workflow Automation')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+<span>Eliminar</span>
+</button>
+</div>
+<div class="mt-3 pt-2.5 bg-surface-container-low rounded-lg p-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-tertiary">smart_toy</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Nova Support, Verde Workflow</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-tertiary px-2 py-0.5 rounded bg-tertiary-container/20">2 agentes</span>
+</div>
+</div>
+</div>
+<!-- Modal Abierto Representado: Detalle de Habilidad 'Web Research' -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-gutter-mobile bg-surface-container-lowest/80 backdrop-blur-md transition-opacity" id="skill-detail-modal">
+<div class="w-full max-w-md max-h-[751px] overflow-y-auto rounded-xl bg-surface-container-low p-space-md shadow-2xl flex flex-col space-y-space-md">
+<!-- Modal Top Header -->
+<div class="flex items-center justify-between pb-2 bg-surface-container-low">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-lg bg-secondary-container/40 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">travel_explore</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Inspector Modular</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Detalle de Habilidad</span>
+</div>
+</div>
+<button aria-label="Cerrar ventana modal" class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface flex items-center justify-center" onclick="closeSkillModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Skill Identity Meta Group -->
+<div class="flex flex-col space-y-space-xs bg-surface-container rounded-lg p-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Nombre</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Web Research</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Categoría</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-secondary font-label-md text-label-md">Investigación</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">ID Referencia</span>
+<span class="font-label-sm text-label-sm font-mono text-primary">SKL-WR-0942</span>
+</div>
+</div>
+<!-- Descripción Completa -->
+<div class="flex flex-col space-y-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Descripción Completa</span>
+<p class="font-body-sm text-body-sm text-on-surface bg-surface-container p-space-md rounded-lg leading-relaxed">
+          Busca, compara y sintetiza información web. Realiza extracciones semánticas en tiempo real, verifica fuentes múltiples y produce reportes concisos para integración en flujos de razonamiento continuos.
+        </p>
+</div>
+<!-- Agentes Vinculados y Recuento Derivado -->
+<div class="flex flex-col space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Agentes Vinculados</span>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm font-semibold">
+<span>Recuento derivado:</span>
+<span class="font-mono">2 agentes</span>
+</div>
+</div>
+<!-- Lista Agentes -->
+<div class="grid grid-cols-1 gap-2">
+<!-- Agente 1 -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-primary/20 text-primary flex items-center justify-center font-label-sm text-label-sm font-bold">AR</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Atlas Researcher</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cluster Prod-US-East</span>
+</div>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+</div>
+<!-- Agente 2 -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container">
+<div class="flex items-center gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-label-sm text-label-sm font-bold">OA</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Orbit Analyst</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cluster Prod-EU-Central</span>
+</div>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+</div>
+</div>
+</div>
+<!-- Advertencia de Demostración al Eliminar -->
+<div class="p-space-md rounded-lg bg-error-container/30 text-on-error-container flex items-start gap-space-sm" id="demo-warning-box">
+<span class="material-symbols-outlined text-[20px] text-error shrink-0">info</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-error">Aviso de Modo Demostración</span>
+<p class="font-body-xs text-body-xs text-on-surface-variant mt-0.5">
+            La eliminación de habilidades centrales está protegida en el entorno sandbox para preservar la estabilidad de Atlas Researcher y Orbit Analyst.
+          </p>
+</div>
+</div>
+<!-- Acciones de Modal -->
+<div class="flex items-center justify-end gap-space-sm pt-2">
+<button class="px-3 py-2 rounded-lg bg-error-container/20 text-error hover:bg-error-container/40 font-body-sm text-body-sm flex items-center gap-1.5 transition-colors" onclick="triggerDemoDelete('Web Research')" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+<span>Eliminar</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-body-sm text-body-sm font-medium hover:opacity-90 active:scale-95 transition-all" onclick="closeSkillModal()" type="button">
+          Cerrar
+        </button>
+</div>
+</div>
+</div>
+<!-- Toast Notificación Demostración -->
+<div class="fixed bottom-20 left-4 right-4 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex justify-center" id="demo-toast">
+<div class="bg-surface-container-highest text-on-surface px-4 py-2.5 rounded-lg shadow-xl flex items-center gap-2 max-w-sm">
+<span class="material-symbols-outlined text-error text-[18px]">lock</span>
+<span class="font-body-sm text-body-sm" id="demo-toast-msg">Acción simulada: Protegido por entorno de demostración.</span>
+</div>
+</div>
+</div>
+<script>
+  function openSkillModal() {
+    const modal = document.getElementById('skill-detail-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    closeAllMenus();
+  }
+
+  function closeSkillModal() {
+    const modal = document.getElementById('skill-detail-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function toggleContext(id) {
+    const menu = document.getElementById(id);
+    const wasHidden = menu.classList.contains('hidden');
+    closeAllMenus();
+    if (wasHidden) {
+      menu.classList.remove('hidden');
+    }
+  }
+
+  function closeAllMenus() {
+    ['menu-2', 'menu-3', 'menu-4'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
+  }
+
+  function triggerDemoDelete(skillName) {
+    closeAllMenus();
+    const toast = document.getElementById('demo-toast');
+    const toastMsg = document.getElementById('demo-toast-msg');
+    toastMsg.textContent = `No se puede eliminar "${skillName}": Habilidad activa en 2 agentes (Modo Demostración).`;
+    
+    toast.classList.remove('translate-y-24', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    setTimeout(() => {
+      toast.classList.add('translate-y-24', 'opacity-0');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 3500);
+  }
+
+  // Click outside menus closes context flyouts
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('button[onclick*="toggleContext"]') && !e.target.closest('[id^="menu-"]')) {
+      closeAllMenus();
+    }
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.3)]" data-active-classes="text-primary font-semibold"><div class="flex items-center justify-between h-16 px-space-xs"><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="panel" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-sm text-label-sm tracking-tight">Panel</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="usuarios" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span class="font-label-sm text-label-sm tracking-tight">Usuarios</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="agentes" href="#"><span class="material-symbols-outlined text-[20px]">smart_toy</span><span class="font-label-sm text-label-sm tracking-tight">Agentes</span></a><a aria-current="page" class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] transition-colors text-primary font-semibold" data-path="habilidades" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span class="font-label-sm text-label-sm tracking-tight">Habilidades</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="contrataciones" href="#"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span class="font-label-sm text-label-sm tracking-tight">Contratos</span></a><a class="flex flex-col items-center justify-center flex-1 h-full min-h-[44px] text-on-surface-variant transition-colors" data-path="registro-de-errores" href="#"><span class="material-symbols-outlined text-[20px]">warning</span><span class="font-label-sm text-label-sm tracking-tight">Errores</span></a></div></nav></body></html>

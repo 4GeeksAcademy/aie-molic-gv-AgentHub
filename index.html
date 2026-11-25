@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1120">
+    <title>Panel | AgentHub</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script>tailwind.config = { darkMode: "class" };</script>
+    <script src="app.js" defer></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+    <div class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 lg:flex">
+      <div id="mobile-nav-backdrop" class="fixed inset-0 z-40 bg-slate-950/50 lg:hidden" hidden></div>
+      <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col border-r border-slate-200 bg-white transition-transform duration-200 motion-reduce:transition-none dark:border-slate-800 dark:bg-slate-900 lg:static lg:z-auto lg:w-60 lg:translate-x-0 lg:transition-none" aria-label="Barra lateral" tabindex="-1">
+        <div class="flex h-16 items-center gap-3 border-b border-slate-200 px-5 dark:border-slate-800">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white" aria-hidden="true">A</span>
+          <span class="text-lg font-semibold tracking-tight">AgentHub</span>
+          <button id="mobile-nav-close" type="button" aria-label="Cerrar navegación" class="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400 lg:hidden"><span aria-hidden="true">×</span></button>
+        </div>
+        <nav class="flex-1 space-y-1 px-3 py-5" aria-label="Navegación principal">
+          <a href="#panel" data-view="panel" aria-current="page" class="flex items-center gap-3 rounded-lg bg-indigo-50 px-3 py-2.5 text-sm font-medium text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-300 dark:focus-visible:ring-indigo-400">
+            <span class="flex h-5 w-5 items-center justify-center" aria-hidden="true">▦</span><span>Panel</span>
+          </a>
+          <a href="#usuarios" data-view="usuarios" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white dark:focus-visible:ring-indigo-400">
+            <span class="flex h-5 w-5 items-center justify-center" aria-hidden="true">♙</span><span>Usuarios</span>
+          </a>
+          <a href="#agentes" data-view="agentes" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white dark:focus-visible:ring-indigo-400">
+            <span class="flex h-5 w-5 items-center justify-center" aria-hidden="true">◇</span><span>Agentes</span>
+          </a>
+          <a href="#habilidades" data-view="habilidades" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white dark:focus-visible:ring-indigo-400">
+            <span class="flex h-5 w-5 items-center justify-center" aria-hidden="true">✳</span><span>Habilidades</span>
+          </a>
+          <a href="#contrataciones" data-view="contrataciones" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white dark:focus-visible:ring-indigo-400">
+            <span class="flex h-5 w-5 items-center justify-center" aria-hidden="true">▤</span><span>Contrataciones</span>
+          </a>
+          <a href="#registro-de-errores" data-view="registro-de-errores" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white dark:focus-visible:ring-indigo-400">
+            <span class="flex h-5 w-5 items-center justify-center" aria-hidden="true">!</span><span>Registro de errores</span>
+          </a>
+        </nav>
+        <div class="border-t border-slate-200 p-4 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">Consola de administración</div>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <header class="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-5 dark:border-slate-800 dark:bg-slate-900 sm:px-8">
+          <div class="flex items-center gap-3">
+            <button id="mobile-nav-open" type="button" aria-label="Abrir navegación" aria-controls="sidebar" aria-expanded="false" class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400 lg:hidden"><span aria-hidden="true">☰</span></button>
+            <div>
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">AgentHub</p>
+            <p id="topbar-title" class="text-sm font-semibold text-slate-900 dark:text-slate-100">Panel</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <p id="topbar-context" class="hidden text-xs text-slate-500 dark:text-slate-400 sm:block">Resumen general</p>
+            <button id="theme-toggle" type="button" aria-label="Cambiar a modo claro" aria-pressed="true" class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400">
+              <span id="theme-toggle-icon" aria-hidden="true">☼</span>
+            </button>
+          </div>
+        </header>
+
+        <main id="main-content" class="mx-auto min-h-[calc(100vh-4rem)] w-full max-w-7xl bg-slate-50 p-4 text-slate-900 dark:bg-slate-950 dark:text-slate-100 sm:p-6 xl:p-8">
+          <section id="panel" data-page="panel" aria-labelledby="panel-title" class="space-y-6">
+            <header class="space-y-1">
+              <p class="text-sm font-medium text-indigo-700 dark:text-indigo-300">Resumen operativo</p>
+              <h1 id="panel-title" class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-3xl">Panel</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Indicadores principales de AgentHub.</p>
+            </header>
+            <div id="kpi-grid" class="grid grid-cols-1 gap-4 min-[520px]:grid-cols-2 min-[1280px]:grid-cols-4" aria-label="Indicadores principales" aria-live="polite"></div>
+
+            <figure class="w-full rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+              <figcaption class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 id="weekly-activity-title" class="text-base font-semibold text-slate-900 dark:text-slate-100">Actividad semanal</h2>
+                  <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Representación visual ilustrativa; no corresponde a actividad real.</p>
+                </div>
+                <span class="inline-flex w-fit items-center gap-2 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 dark:border-slate-700 dark:text-slate-300">
+                  <span class="h-2.5 w-2.5 rounded-sm bg-indigo-600 dark:bg-indigo-400" aria-hidden="true"></span>
+                  Serie de muestra
+                </span>
+              </figcaption>
+              <div role="img" aria-labelledby="weekly-activity-title" class="grid h-40 grid-cols-7 items-end gap-2 border-b border-slate-200 px-1 dark:border-slate-700 sm:h-48 sm:gap-4">
+                <div class="flex h-full flex-col items-center justify-end gap-2"><div class="h-[48%] w-full max-w-10 rounded-t-md bg-blue-600 dark:bg-blue-400 motion-reduce:transition-none" aria-hidden="true"></div><span class="pb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Lun</span></div>
+                <div class="flex h-full flex-col items-center justify-end gap-2"><div class="h-[68%] w-full max-w-10 rounded-t-md bg-indigo-600 dark:bg-indigo-400 motion-reduce:transition-none" aria-hidden="true"></div><span class="pb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Mar</span></div>
+                <div class="flex h-full flex-col items-center justify-end gap-2"><div class="h-[82%] w-full max-w-10 rounded-t-md bg-violet-600 dark:bg-violet-400 motion-reduce:transition-none" aria-hidden="true"></div><span class="pb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Mié</span></div>
+                <div class="flex h-full flex-col items-center justify-end gap-2"><div class="h-[60%] w-full max-w-10 rounded-t-md bg-blue-600 dark:bg-blue-400 motion-reduce:transition-none" aria-hidden="true"></div><span class="pb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Jue</span></div>
+                <div class="flex h-full flex-col items-center justify-end gap-2"><div class="h-[74%] w-full max-w-10 rounded-t-md bg-indigo-600 dark:bg-indigo-400 motion-reduce:transition-none" aria-hidden="true"></div><span class="pb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Vie</span></div>
+                <div class="flex h-full flex-col items-center justify-end gap-2"><div class="h-[38%] w-full max-w-10 rounded-t-md bg-violet-600 dark:bg-violet-400 motion-reduce:transition-none" aria-hidden="true"></div><span class="pb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Sáb</span></div>
+                <div class="flex h-full flex-col items-center justify-end gap-2"><div class="h-[28%] w-full max-w-10 rounded-t-md bg-blue-600 dark:bg-blue-400 motion-reduce:transition-none" aria-hidden="true"></div><span class="pb-2 text-xs font-medium text-slate-600 dark:text-slate-300">Dom</span></div>
+              </div>
+              <p id="weekly-activity-summary" class="mt-3 text-xs text-slate-500 dark:text-slate-400">Siete días, de lunes a domingo; las barras ilustran una variación de ejemplo y no representan actividad ni métricas reales.</p>
+            </figure>
+          </section>
+
+          <section id="usuarios" data-page="usuarios" aria-labelledby="usuarios-title" class="space-y-6 text-slate-900 dark:text-slate-100" hidden>
+            <header class="space-y-1">
+              <h1 id="usuarios-title" tabindex="-1" class="text-2xl font-semibold tracking-tight text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-white">Usuarios</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Consulta las cuentas, sus planes y los agentes asociados.</p>
+            </header>
+            <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" aria-label="Tabla de usuarios">
+              <table class="w-full min-w-[760px] text-left text-sm">
+                <caption class="sr-only">Usuarios registrados en AgentHub</caption>
+                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-800 dark:text-slate-300"><tr>
+                  <th scope="col" class="px-5 py-3 font-medium">Nombre</th><th scope="col" class="px-5 py-3 font-medium">Email</th><th scope="col" class="px-5 py-3 font-medium">Plan</th><th scope="col" class="px-5 py-3 font-medium">Estado</th><th scope="col" class="px-5 py-3 text-right font-medium">Acciones</th>
+                </tr></thead>
+                <tbody id="users-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+              </table>
+              <p id="users-empty-state" class="hidden px-5 py-12 text-center text-sm text-slate-600 dark:text-slate-400" role="status">No hay usuarios para mostrar.</p>
+            </div>
+          </section>
+          <section id="agentes" data-page="agentes" aria-labelledby="agentes-title" class="space-y-6 text-slate-900 dark:text-slate-100" hidden>
+            <header class="space-y-1">
+              <h1 id="agentes-title" tabindex="-1" class="text-2xl font-semibold tracking-tight text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-white">Agentes</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Consulta propietarios, estados y habilidades asociadas; configura el prompt de demostración.</p>
+            </header>
+            <div id="agents-list" class="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2" aria-label="Listado de agentes"></div>
+            <p id="agents-empty-state" class="hidden rounded-xl border border-dashed border-slate-300 px-5 py-12 text-center text-sm text-slate-600 dark:border-slate-700 dark:text-slate-400" role="status" tabindex="-1">No hay agentes disponibles en esta sesión.</p>
+          </section>
+          <section id="habilidades" data-page="habilidades" aria-labelledby="habilidades-title" class="space-y-6 text-slate-900 dark:text-slate-100" hidden>
+            <header class="space-y-1"><h1 id="habilidades-title" tabindex="-1" class="text-2xl font-semibold tracking-tight text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-white">Habilidades</h1><p class="text-sm text-slate-600 dark:text-slate-400">Catálogo de capacidades modulares que pueden utilizar los agentes.</p></header>
+            <aside class="rounded-xl border border-indigo-200 bg-indigo-50 p-4 dark:border-indigo-900 dark:bg-indigo-950/40" aria-labelledby="skills-info-title"><h2 id="skills-info-title" class="text-sm font-semibold text-indigo-950 dark:text-indigo-200">¿Qué es una skill?</h2><p class="mt-1 text-sm leading-6 text-indigo-900 dark:text-indigo-100">Una skill es una capacidad modular que un agente puede utilizar, por ejemplo búsqueda o análisis. Una misma skill puede asociarse a varios agentes.</p></aside>
+            <div id="skills-list" class="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2" aria-label="Catálogo de habilidades"></div><p id="skills-empty-state" class="hidden rounded-xl border border-dashed border-slate-300 px-5 py-12 text-center text-sm text-slate-600 dark:border-slate-700 dark:text-slate-400" role="status" tabindex="-1">No hay habilidades disponibles en esta sesión.</p>
+          </section>
+          <section id="contrataciones" data-page="contrataciones" aria-labelledby="contrataciones-title" class="space-y-6 text-slate-900 dark:text-slate-100" hidden>
+            <header class="space-y-1">
+              <h1 id="contrataciones-title" tabindex="-1" class="text-2xl font-semibold tracking-tight text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-white">Contrataciones</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Consulta los contratos de alquiler de agentes y sus importes comerciales históricos.</p>
+            </header>
+            <div id="contracts-table-region" class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" role="region" aria-label="Tabla de contrataciones" tabindex="0">
+              <table class="w-full min-w-[980px] text-left text-sm">
+                <caption class="sr-only">Contratos de alquiler de agentes</caption>
+                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-800 dark:text-slate-300"><tr>
+                  <th scope="col" class="px-4 py-3 font-medium">Cliente</th><th scope="col" class="px-4 py-3 font-medium">Agente</th><th scope="col" class="px-4 py-3 font-medium">Skills contratadas</th><th scope="col" class="px-4 py-3 font-medium">Fecha de inicio</th><th scope="col" class="px-4 py-3 font-medium">Fecha de fin</th><th scope="col" class="px-4 py-3 text-right font-medium">Importe pagado</th><th scope="col" class="px-4 py-3 text-right font-medium">Acciones</th>
+                </tr></thead>
+                <tbody id="contracts-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+              </table>
+              <p id="contracts-empty-state" class="hidden px-5 py-12 text-center text-sm text-slate-600 dark:text-slate-400" role="status">No hay contratos para mostrar.</p>
+            </div>
+          </section>
+          <section id="registro-de-errores" data-page="registro-de-errores" aria-labelledby="errores-title" class="space-y-6 text-slate-900 dark:text-slate-100" hidden>
+            <header class="space-y-1">
+              <h1 id="errores-title" tabindex="-1" class="text-2xl font-semibold tracking-tight text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-white">Registro de errores</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Consulta los registros de error de demostración y revisa su estado e información asociada.</p>
+            </header>
+            <div id="errors-table-region" class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" role="region" aria-label="Listado de errores" tabindex="0">
+              <table class="w-full min-w-[960px] text-left text-sm">
+                <caption class="sr-only">Registros de errores de AgentHub</caption>
+                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-800 dark:text-slate-300"><tr>
+                  <th scope="col" class="px-4 py-3 font-medium">Timestamp (UTC)</th><th scope="col" class="px-4 py-3 font-medium">Agente</th><th scope="col" class="px-4 py-3 font-medium">Tipo / Severidad</th><th scope="col" class="px-4 py-3 font-medium">Descripción</th><th scope="col" class="px-4 py-3 font-medium">Estado</th><th scope="col" class="px-4 py-3 text-right font-medium">Acciones</th>
+                </tr></thead>
+                <tbody id="errors-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+              </table>
+              <p id="errors-empty-state" class="hidden px-5 py-12 text-center text-sm text-slate-600 dark:text-slate-400" role="status">No hay errores para mostrar en esta sesión.</p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <div id="user-dialog-backdrop" class="fixed inset-0 z-[60] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true">
+      <section id="user-dialog" class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900" role="dialog" aria-modal="true" aria-labelledby="user-dialog-title" tabindex="-1">
+        <header class="flex items-start justify-between gap-4"><div><h2 id="user-dialog-title" class="text-lg font-semibold text-slate-950 dark:text-white"></h2><p id="user-dialog-description" class="mt-1 text-sm text-slate-600 dark:text-slate-400"></p></div><button id="user-dialog-close" type="button" aria-label="Cerrar diálogo" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400">Cerrar</button></header>
+        <dl id="user-dialog-fields" class="mt-6 grid gap-4 sm:grid-cols-2"></dl>
+        <div id="user-dialog-agents-wrap" class="mt-5"><h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Agentes asociados</h3><ul id="user-dialog-agents" class="mt-2 space-y-2 text-sm text-slate-600 dark:text-slate-300"></ul></div>
+        <div id="user-dialog-confirm" class="mt-6 hidden"><p class="text-sm text-slate-700 dark:text-slate-300">Se retirará de esta sesión de demostración. Los agentes y contratos no se modificarán.</p><div class="mt-5 flex justify-end gap-3"><button id="user-delete-cancel" type="button" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:border-slate-700 dark:hover:bg-slate-800">Cancelar</button><button id="user-delete-confirm" type="button" class="rounded-lg bg-rose-700 px-4 py-2 text-sm font-medium text-white hover:bg-rose-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">Confirmar eliminación</button></div></div>
+      </section>
+    </div>
+    <p id="users-announcement" class="sr-only" aria-live="polite"></p>
+    <p id="agents-announcement" class="sr-only" aria-live="polite"></p>
+    <p id="skills-announcement" class="sr-only" aria-live="polite"></p>
+    <div id="contract-detail-backdrop" class="fixed inset-0 z-[80] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true">
+      <section id="contract-detail-dialog" class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="contract-detail-title" tabindex="-1">
+        <header class="flex items-start justify-between gap-4"><div><h2 id="contract-detail-title" class="text-lg font-semibold text-slate-950 dark:text-white"></h2><p id="contract-detail-id" class="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400"></p></div><button id="contract-detail-close" type="button" aria-label="Cerrar detalle del contrato" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400">Cerrar</button></header>
+        <dl id="contract-detail-fields" class="mt-5 grid gap-4 sm:grid-cols-2"></dl>
+        <div class="mt-6 overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700"><table class="w-full min-w-[420px] text-left text-sm"><caption class="sr-only">Desglose de skills y precios snapshot</caption><thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-800 dark:text-slate-300"><tr><th scope="col" class="px-4 py-3 font-medium">Skill contratada</th><th scope="col" class="px-4 py-3 text-right font-medium">Precio individual</th><th scope="col" class="px-4 py-3 text-right font-medium">Subtotal</th></tr></thead><tbody id="contract-detail-lines" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody><tfoot><tr class="bg-slate-50 dark:bg-slate-800"><th scope="row" class="px-4 py-3 text-left font-semibold">Total pagado</th><td id="contract-detail-total" colspan="2" class="px-4 py-3 text-right font-mono font-semibold tabular-nums"></td></tr></tfoot></table></div>
+      </section>
+    </div>
+    <p id="contracts-announcement" class="sr-only" aria-live="polite"></p>
+    <div id="error-detail-backdrop" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true">
+      <section id="error-detail-dialog" class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="error-detail-title" tabindex="-1">
+        <header class="flex items-start justify-between gap-4"><div><h2 id="error-detail-title" class="text-lg font-semibold text-slate-950 dark:text-white"></h2><p id="error-detail-id" class="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400"></p></div><button id="error-detail-close" type="button" aria-label="Cerrar detalle del error" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-indigo-400">Cerrar</button></header>
+        <dl id="error-detail-fields" class="mt-5 grid gap-4 sm:grid-cols-2"></dl>
+        <section class="mt-5"><h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Mensaje</h3><p id="error-detail-message" class="mt-2 break-words text-sm leading-6 text-slate-700 dark:text-slate-300"></p></section>
+        <section class="mt-5"><h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Traza de demostración</h3><pre id="error-detail-stack" tabindex="0" class="mt-2 max-h-64 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-4 font-mono text-xs leading-6 text-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"><code></code></pre></section>
+      </section>
+    </div>
+    <div id="skill-detail-backdrop" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true"><section id="skill-detail-dialog" class="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="skill-detail-title" tabindex="-1"><header class="flex items-start justify-between gap-4"><div><h2 id="skill-detail-title" class="text-lg font-semibold text-slate-950 dark:text-white"></h2><p id="skill-detail-id" class="mt-1 font-mono text-xs text-slate-500 dark:text-slate-400"></p></div><button id="skill-detail-close" type="button" aria-label="Cerrar detalle de habilidad" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800">Cerrar</button></header><dl id="skill-detail-fields" class="mt-5 grid gap-4 sm:grid-cols-2"></dl><div class="mt-5"><h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Agentes asociados</h3><ul id="skill-detail-agents" class="mt-2 space-y-2 text-sm text-slate-600 dark:text-slate-300"></ul></div></section></div>
+    <div id="skill-delete-backdrop" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true"><section id="skill-delete-dialog" class="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900" role="alertdialog" aria-modal="true" aria-labelledby="skill-delete-title" aria-describedby="skill-delete-description" tabindex="-1"><h2 id="skill-delete-title" class="text-lg font-semibold text-slate-950 dark:text-white">¿Eliminar habilidad?</h2><p id="skill-delete-description" class="mt-2 text-sm text-slate-600 dark:text-slate-300"></p><p class="mt-3 text-xs text-slate-500 dark:text-slate-400">Solo se retirará de esta sesión y de las relaciones actuales de agentes. Los snapshots comerciales no se modificarán.</p><footer class="mt-6 flex justify-end gap-3"><button id="skill-delete-cancel" type="button" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:border-slate-700 dark:hover:bg-slate-800">Cancelar</button><button id="skill-delete-confirm" type="button" class="rounded-lg bg-rose-700 px-4 py-2 text-sm font-medium text-white hover:bg-rose-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">Eliminar</button></footer></section></div>
+    <div id="agent-config-backdrop" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true">
+      <section id="agent-config-dialog" class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-700 dark:bg-slate-900 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="agent-config-title" tabindex="-1">
+        <header class="flex items-start justify-between gap-4"><div><h2 id="agent-config-title" class="text-lg font-semibold text-slate-950 dark:text-white">Configurar agente</h2><p id="agent-config-id" class="mt-1 text-xs text-slate-500 dark:text-slate-400"></p></div><button id="agent-config-close" type="button" aria-label="Cerrar configuración" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:text-slate-300 dark:hover:bg-slate-800">Cerrar</button></header>
+        <dl class="mt-5 grid gap-4 sm:grid-cols-3"><div><dt class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Agente</dt><dd id="agent-config-name" class="mt-1 text-sm font-medium"></dd></div><div><dt class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Propietario</dt><dd id="agent-config-owner" class="mt-1 text-sm"></dd></div><div><dt class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Estado</dt><dd id="agent-config-status" class="mt-1 text-sm"></dd></div></dl>
+        <div class="mt-5"><label for="agent-system-prompt" class="text-sm font-medium">Prompt del sistema</label><textarea id="agent-system-prompt" rows="8" class="mt-2 w-full resize-y rounded-lg border border-slate-300 bg-white p-3 text-sm leading-6 text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus-visible:ring-indigo-400"></textarea><p class="mt-2 text-xs text-slate-600 dark:text-slate-400">Cambios de demostración; no se guardan en un servidor</p></div>
+        <footer class="mt-6 flex flex-wrap justify-end gap-3"><button id="agent-config-cancel" type="button" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:border-slate-700 dark:hover:bg-slate-800">Cancelar</button><button id="agent-config-save" type="button" class="rounded-lg bg-indigo-700 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">Guardar cambios</button></footer>
+      </section>
+    </div>
+    <div id="agent-delete-backdrop" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/60 p-4" aria-hidden="true">
+      <section id="agent-delete-dialog" class="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900" role="alertdialog" aria-modal="true" aria-labelledby="agent-delete-title" aria-describedby="agent-delete-description" tabindex="-1">
+        <h2 id="agent-delete-title" class="text-lg font-semibold text-slate-950 dark:text-white">¿Eliminar agente?</h2><p id="agent-delete-description" class="mt-2 text-sm text-slate-600 dark:text-slate-300"></p><p class="mt-3 text-xs text-slate-500 dark:text-slate-400">Solo se retirará de esta sesión. Los usuarios, habilidades, contratos y errores históricos no se modificarán.</p>
+        <footer class="mt-6 flex justify-end gap-3"><button id="agent-delete-cancel" type="button" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 dark:border-slate-700 dark:hover:bg-slate-800">Cancelar</button><button id="agent-delete-confirm" type="button" class="rounded-lg bg-rose-700 px-4 py-2 text-sm font-medium text-white hover:bg-rose-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">Eliminar</button></footer>
+      </section>
+    </div>
+  </body>
+</html>
